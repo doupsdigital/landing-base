@@ -56,7 +56,7 @@ export function AboutSection({
   }, [])
 
   return (
-    <section ref={sectionRef} className="relative w-full overflow-hidden">
+    <section ref={sectionRef} className="relative w-full snap-start snap-always overflow-hidden">
       <div ref={imgWrapRef} className="absolute inset-[-6%]" style={{ opacity: imageOpacity }}>
         <FullBleedMedia src={image} type="image" alt="" />
       </div>

@@ -85,7 +85,7 @@ export function VideoHero({
   }, [])
 
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-screen w-full snap-start snap-always overflow-hidden">
       <FullBleedMedia src={videoSrc} type="video" alt="" mediaRef={videoRef} className="absolute inset-0" />
       <div
         ref={overlayRef}

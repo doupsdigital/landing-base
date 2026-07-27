@@ -38,7 +38,10 @@ export function VinhoPage({ variation }: VinhoPageProps) {
     : portfolio
 
   return (
-    <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
+    <div
+      style={{ backgroundColor: bg, color: ink, ...body }}
+      className="h-screen w-full snap-y snap-mandatory overflow-y-auto"
+    >
       <VideoHero
         videoSrc={heroVideos.vinho}
         eyebrow="Modelo Comercial — São Paulo"
@@ -87,9 +90,9 @@ export function VinhoPage({ variation }: VinhoPageProps) {
 
       {/* Campanhas ideais */}
       <SectionDivider label="Campanhas ideais" labelStyle={{ color: accent }} bg={bg} />
-      <section className="px-6 py-16 sm:px-10 md:px-16">
+      <section className="flex min-h-screen w-full snap-start snap-always flex-col items-center justify-center px-6 py-16 sm:px-10 md:px-16">
         <ScrollFade>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             {isabella.categories.map((c) => (
               <span
                 key={c}
@@ -105,7 +108,10 @@ export function VinhoPage({ variation }: VinhoPageProps) {
 
       {/* Contato final */}
       <SectionDivider label="Contato" labelStyle={{ color: accent }} bg={bg} />
-      <section id="contato" className="px-6 py-24 text-center sm:px-10">
+      <section
+        id="contato"
+        className="flex min-h-screen w-full snap-start snap-always flex-col items-center justify-center px-6 py-24 text-center sm:px-10"
+      >
         <ScrollFade>
           <h2 style={display} className="text-[clamp(2rem,5vw,4rem)]">
             Vamos criar juntos.
