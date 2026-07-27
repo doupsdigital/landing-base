@@ -2,6 +2,7 @@ import { ScrollFade } from '../components/ScrollFade'
 import { CTAButton } from '../components/CTAButton'
 import { VideoHero } from '../components/VideoHero'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
+import { AboutSection } from '../components/AboutSection'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
 
 const bg = '#EFE6D3'
@@ -55,36 +56,25 @@ export function RivieraPage() {
       />
 
       {/* Sobre */}
-      <section className="px-6 py-16 sm:px-10 md:px-16">
+      <section className="px-6 pt-16 sm:px-10 md:px-16">
         <ScrollFade>
           <TapeRule />
         </ScrollFade>
-        <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-2">
-          <ScrollFade>
-            <span className="mb-4 block text-xs uppercase tracking-[0.16em]" style={{ color: accent }}>
-              Sobre
-            </span>
-            <p className="max-w-[52ch] text-lg leading-relaxed opacity-90">{isabella.bioLong}</p>
-          </ScrollFade>
-          <ScrollFade y={60}>
-            <div
-              className="aspect-[4/3] w-full overflow-hidden rounded-md border"
-              style={{ borderColor: line, backgroundColor: surface }}
-            >
-              <img
-                src={images.skirt11}
-                alt="Isabella Marques, produção de moda"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </ScrollFade>
-        </div>
       </section>
+      <AboutSection
+        image={images.rosto}
+        bioLong={isabella.bioLong}
+        overlayColor={ink}
+        eyebrowStyle={{ color: accent }}
+        bodyStyle={{ color: bg }}
+        mutedStyle={{ color: surface }}
+        valueColor={bg}
+      />
 
       {/* Ficha / medidas */}
       <section className="px-6 py-16 sm:px-10 md:px-16">
         <ScrollFade>
-          <span className="mb-2 block text-xs uppercase tracking-[0.16em]" style={{ color: accent }}>
+          <span className="mb-2 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
             Ficha
           </span>
           <TapeRule marks={['ALTURA', 'IDADE', 'OLHOS', 'CABELO', 'BIOTIPO']} />
@@ -109,13 +99,14 @@ export function RivieraPage() {
         eyebrow="Portfólio"
         eyebrowStyle={{ ...body, color: '#EFE6D3' }}
         captionStyle={{ ...display, color: '#F8F3E8' }}
+        descriptionStyle={{ ...body, color: '#EFE6D3' }}
         overlayColor={ink}
       />
 
       {/* Campanhas ideais */}
       <section className="px-6 py-16 sm:px-10 md:px-16">
         <ScrollFade>
-          <span className="mb-6 block text-xs uppercase tracking-[0.16em]" style={{ color: accent }}>
+          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
             Campanhas ideais
           </span>
           <div className="flex flex-wrap gap-3">
@@ -136,7 +127,7 @@ export function RivieraPage() {
       <section id="contato" className="px-6 py-20 text-center sm:px-10">
         <ScrollFade>
           <TapeRule />
-          <span className="mb-6 mt-8 block text-xs uppercase tracking-[0.16em]" style={{ color: accent }}>
+          <span className="mb-6 mt-8 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
             Contato
           </span>
           <h2 style={display} className="text-[clamp(2rem,5vw,3.5rem)]">

@@ -46,7 +46,7 @@ export function StudioPage() {
       {/* Sobre */}
       <section className="border-t px-6 py-16 sm:px-10 md:px-16" style={{ borderColor: line }}>
         <ScrollFade>
-          <span className="mb-4 block text-xs uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
+          <span className="mb-4 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
             Sobre
           </span>
           <p className="max-w-[60ch] text-lg leading-relaxed opacity-90">{isabella.bioLong}</p>
@@ -56,7 +56,7 @@ export function StudioPage() {
       {/* Comp Card — elemento de assinatura */}
       <section className="border-t px-6 py-16 sm:px-10 md:px-16" style={{ borderColor: line }}>
         <ScrollFade>
-          <span className="mb-6 block text-xs uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
+          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
             Comp Card
           </span>
           <div className="overflow-hidden rounded-none border" style={{ borderColor: line }}>
@@ -117,13 +117,14 @@ export function StudioPage() {
         eyebrow="Portfólio"
         eyebrowStyle={{ ...mono, color: '#DCE0D6' }}
         captionStyle={{ ...display, color: '#FFFFFF' }}
+        descriptionStyle={{ ...body, color: surface }}
         overlayColor={ink}
       />
 
       {/* Contato final */}
       <section id="contato" className="border-t px-6 py-20 text-center sm:px-10" style={{ borderColor: line }}>
         <ScrollFade>
-          <span className="mb-6 block text-xs uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
+          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
             Contato
           </span>
           <h2 style={display} className="text-[clamp(2rem,5vw,3.25rem)]">

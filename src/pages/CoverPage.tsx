@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ScrollFade } from '../components/ScrollFade'
 import { CTAButton } from '../components/CTAButton'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
+import { AboutSection } from '../components/AboutSection'
 import { FullBleedMedia } from '../components/FullBleedMedia'
 import { gsap } from '../lib/gsap'
 import { hexToRgba } from '../lib/color'
@@ -12,7 +13,6 @@ const bg = '#14150F'
 const ink = '#EFE9DD'
 const muted = '#A79E8C'
 const accent = '#C6A15B'
-const surface = '#1D1F17'
 const line = '#33362A'
 
 const display = { fontFamily: "'DM Serif Display', serif", fontStyle: 'italic' as const, color: ink }
@@ -92,7 +92,7 @@ function CoverHero() {
 
       <span
         ref={eyebrowRef}
-        className="absolute left-6 top-20 text-xs uppercase tracking-[0.24em] sm:left-10 sm:top-24"
+        className="absolute left-6 top-20 text-sm sm:text-base uppercase tracking-[0.24em] sm:left-10 sm:top-24"
         style={{ ...data, color: accent }}
       >
         Modelo Comercial — São Paulo
@@ -149,35 +149,16 @@ export function CoverPage() {
       <CoverHero />
 
       {/* Sobre */}
-      <section className="border-t px-6 py-16 sm:px-10 md:px-16" style={{ borderColor: line }}>
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-          <ScrollFade>
-            <span className="mb-4 block text-xs uppercase tracking-[0.2em]" style={{ ...data, color: accent }}>
-              Sobre
-            </span>
-            <p className="max-w-[52ch] text-lg leading-relaxed opacity-90">{isabella.bioLong}</p>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm" style={{ ...data, color: muted }}>
-              {isabella.stats.map((s) => (
-                <span key={s.label}>
-                  <span style={{ color: ink }}>{s.value}</span> · {s.label}
-                </span>
-              ))}
-            </div>
-          </ScrollFade>
-          <ScrollFade y={60}>
-            <div
-              className="aspect-[4/3] w-full overflow-hidden rounded-sm border"
-              style={{ borderColor: line, backgroundColor: surface }}
-            >
-              <img
-                src={images.dress10}
-                alt="Isabella Marques, produção editorial"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </ScrollFade>
-        </div>
-      </section>
+      <AboutSection
+        image={images.rosto}
+        bioLong={isabella.bioLong}
+        stats={isabella.stats}
+        overlayColor={bg}
+        eyebrowStyle={{ ...data, color: accent }}
+        bodyStyle={{ ...body, color: ink }}
+        mutedStyle={{ ...data, color: muted }}
+        valueColor={ink}
+      />
 
       {/* Portfólio — pinado */}
       <PinnedPortfolio
@@ -185,13 +166,14 @@ export function CoverPage() {
         eyebrow="Portfólio"
         eyebrowStyle={{ ...data, color: accent }}
         captionStyle={{ ...display }}
+        descriptionStyle={{ ...body, color: ink }}
         overlayColor={bg}
       />
 
       {/* Campanhas ideais */}
       <section className="border-t px-6 py-16 sm:px-10 md:px-16" style={{ borderColor: line }}>
         <ScrollFade>
-          <span className="mb-6 block text-xs uppercase tracking-[0.2em]" style={{ ...data, color: accent }}>
+          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.2em]" style={{ ...data, color: accent }}>
             Campanhas ideais
           </span>
           <div className="flex flex-wrap gap-3">
@@ -211,7 +193,7 @@ export function CoverPage() {
       {/* Contato final */}
       <section id="contato" className="border-t px-6 py-24 text-center sm:px-10" style={{ borderColor: line }}>
         <ScrollFade>
-          <span className="mb-6 block text-xs uppercase tracking-[0.2em]" style={{ ...data, color: accent }}>
+          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.2em]" style={{ ...data, color: accent }}>
             Contato
           </span>
           <h2 style={display} className="text-[clamp(2.5rem,7vw,5.5rem)]">

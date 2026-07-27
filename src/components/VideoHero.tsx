@@ -127,7 +127,7 @@ export function VideoHero({
       <div className="absolute inset-x-0 bottom-0 px-6 pb-12 sm:px-10 sm:pb-16 md:px-16">
         <div ref={eyebrowRef} className="mb-4 flex items-center gap-3">
           <span className="inline-block h-px w-5" style={{ backgroundColor: colors.accent }} />
-          <span className="text-xs uppercase tracking-[0.2em]" style={{ ...dataFont, color: colors.accent }}>
+          <span className="text-sm uppercase tracking-[0.2em] sm:text-base" style={{ ...dataFont, color: colors.accent }}>
             {eyebrow}
           </span>
         </div>

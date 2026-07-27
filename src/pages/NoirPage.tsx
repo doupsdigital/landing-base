@@ -2,13 +2,13 @@ import { ScrollFade } from '../components/ScrollFade'
 import { CTAButton } from '../components/CTAButton'
 import { VideoHero } from '../components/VideoHero'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
+import { AboutSection } from '../components/AboutSection'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
 
 const ink = '#F2EFEA'
 const bg = '#0C0C0D'
 const muted = '#8E8E92'
 const accent = '#B99A5B'
-const surface = '#232325'
 const line = '#2A2A2C'
 
 const display = { fontFamily: "'Fraunces', serif", fontStyle: 'italic' as const, color: ink }
@@ -35,35 +35,16 @@ export function NoirPage() {
       />
 
       {/* Sobre */}
-      <section className="border-t px-6 py-20 sm:px-10 md:px-16" style={{ borderColor: line }}>
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-          <ScrollFade>
-            <span className="mb-4 block text-xs uppercase tracking-[0.16em]" style={{ color: accent }}>
-              Sobre
-            </span>
-            <p className="max-w-[52ch] text-lg leading-relaxed opacity-90">{isabella.bioLong}</p>
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm" style={{ color: muted }}>
-              {isabella.stats.map((s) => (
-                <span key={s.label}>
-                  <span style={{ color: ink }}>{s.value}</span> · {s.label}
-                </span>
-              ))}
-            </div>
-          </ScrollFade>
-          <ScrollFade y={60}>
-            <div
-              className="aspect-[4/3] w-full overflow-hidden rounded-sm border"
-              style={{ borderColor: line, backgroundColor: surface }}
-            >
-              <img
-                src={images.dress10}
-                alt="Isabella Marques em produção editorial noturna"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </ScrollFade>
-        </div>
-      </section>
+      <AboutSection
+        image={images.rosto}
+        bioLong={isabella.bioLong}
+        stats={isabella.stats}
+        overlayColor={bg}
+        eyebrowStyle={{ color: accent }}
+        bodyStyle={{ ...body, color: ink }}
+        mutedStyle={{ color: muted }}
+        valueColor={ink}
+      />
 
       {/* Portfólio — pinado */}
       <PinnedPortfolio
@@ -71,13 +52,14 @@ export function NoirPage() {
         eyebrow="Portfólio"
         eyebrowStyle={{ ...body, color: accent }}
         captionStyle={{ ...display }}
+        descriptionStyle={{ ...body, color: ink }}
         overlayColor={bg}
       />
 
       {/* Campanhas ideais */}
       <section className="border-t px-6 py-20 sm:px-10 md:px-16" style={{ borderColor: line }}>
         <ScrollFade>
-          <span className="mb-6 block text-xs uppercase tracking-[0.16em]" style={{ color: accent }}>
+          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
             Campanhas ideais
           </span>
           <div className="flex flex-wrap gap-3">
@@ -97,7 +79,7 @@ export function NoirPage() {
       {/* Contato final */}
       <section id="contato" className="border-t px-6 py-24 text-center sm:px-10" style={{ borderColor: line }}>
         <ScrollFade>
-          <span className="mb-6 block text-xs uppercase tracking-[0.16em]" style={{ color: accent }}>
+          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
             Contato
           </span>
           <h2 style={display} className="text-[clamp(2rem,5vw,4rem)]">
