@@ -39,14 +39,13 @@ export function PinnedPortfolio({
               <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
             </div>
 
-            {/* Contraste só onde o texto precisa (centro) + uma borda bem
-                rasa (~10%) nas duas pontas, sólida na cor do separador
-                vizinho — o resto da foto (incluindo o início/cabeça) fica
-                livre. */}
+            {/* Contraste só onde o texto precisa (centro) — o separador já
+                cuida da transição entre seções, a foto fica livre do
+                início ao fim. */}
             <div
               className="absolute inset-0"
               style={{
-                background: `linear-gradient(to bottom, ${overlayColor} 0%, transparent 10%, transparent 42%, ${overlayColor}99 50%, transparent 58%, transparent 90%, ${overlayColor} 100%)`,
+                background: `linear-gradient(to bottom, transparent 0%, transparent 40%, ${overlayColor}99 50%, transparent 60%, transparent 100%)`,
               }}
             />
 
