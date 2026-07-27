@@ -15,10 +15,10 @@ type SectionDividerProps = {
 export function SectionDivider({ label, labelStyle, bg }: SectionDividerProps) {
   return (
     <div
-      className="flex h-[20vh] min-h-[130px] w-full items-center justify-center"
+      className="flex h-[13vh] min-h-[90px] w-full items-center justify-center"
       style={{ backgroundColor: bg }}
     >
-      <span className="text-sm uppercase tracking-[0.2em] sm:text-base" style={labelStyle}>
+      <span className="text-base uppercase tracking-[0.2em] sm:text-lg" style={labelStyle}>
         {label}
       </span>
     </div>

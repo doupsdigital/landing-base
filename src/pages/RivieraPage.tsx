@@ -104,11 +104,9 @@ export function RivieraPage() {
       />
 
       {/* Campanhas ideais */}
+      <SectionDivider label="Campanhas ideais" labelStyle={{ color: '#EFE6D3' }} bg={ink} />
       <section className="px-6 py-16 sm:px-10 md:px-16">
         <ScrollFade>
-          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
-            Campanhas ideais
-          </span>
           <div className="flex flex-wrap gap-3">
             {isabella.categories.map((c) => (
               <span
@@ -124,12 +122,14 @@ export function RivieraPage() {
       </section>
 
       {/* Contato final */}
-      <section id="contato" className="px-6 py-20 text-center sm:px-10">
+      <section className="px-6 pt-16 sm:px-10 md:px-16">
         <ScrollFade>
           <TapeRule />
-          <span className="mb-6 mt-8 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
-            Contato
-          </span>
+        </ScrollFade>
+      </section>
+      <SectionDivider label="Contato" labelStyle={{ color: '#EFE6D3' }} bg={ink} />
+      <section id="contato" className="px-6 py-20 text-center sm:px-10">
+        <ScrollFade>
           <h2 style={display} className="text-[clamp(2rem,5vw,3.5rem)]">
             Vamos criar juntos.
           </h2>

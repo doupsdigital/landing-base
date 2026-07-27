@@ -2,6 +2,7 @@ import { ScrollFade } from '../components/ScrollFade'
 import { CTAButton } from '../components/CTAButton'
 import { VideoHero } from '../components/VideoHero'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
+import { SectionDivider } from '../components/SectionDivider'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
 
 const bg = '#FFFFFF'
@@ -121,11 +122,9 @@ export function StudioPage() {
       />
 
       {/* Contato final */}
-      <section id="contato" className="border-t px-6 py-20 text-center sm:px-10" style={{ borderColor: line }}>
+      <SectionDivider label="Contato" labelStyle={{ ...mono, color: '#DCE0D6' }} bg={ink} />
+      <section id="contato" className="px-6 py-20 text-center sm:px-10">
         <ScrollFade>
-          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
-            Contato
-          </span>
           <h2 style={display} className="text-[clamp(2rem,5vw,3.25rem)]">
             Vamos criar juntos.
           </h2>

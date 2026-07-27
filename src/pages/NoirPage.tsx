@@ -57,11 +57,9 @@ export function NoirPage() {
       />
 
       {/* Campanhas ideais */}
-      <section className="border-t px-6 py-20 sm:px-10 md:px-16" style={{ borderColor: line }}>
+      <SectionDivider label="Campanhas ideais" labelStyle={{ color: accent }} bg={bg} />
+      <section className="px-6 py-20 sm:px-10 md:px-16">
         <ScrollFade>
-          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
-            Campanhas ideais
-          </span>
           <div className="flex flex-wrap gap-3">
             {isabella.categories.map((c) => (
               <span
@@ -77,11 +75,9 @@ export function NoirPage() {
       </section>
 
       {/* Contato final */}
-      <section id="contato" className="border-t px-6 py-24 text-center sm:px-10" style={{ borderColor: line }}>
+      <SectionDivider label="Contato" labelStyle={{ color: accent }} bg={bg} />
+      <section id="contato" className="px-6 py-24 text-center sm:px-10">
         <ScrollFade>
-          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ color: accent }}>
-            Contato
-          </span>
           <h2 style={display} className="text-[clamp(2rem,5vw,4rem)]">
             Vamos criar juntos.
           </h2>
