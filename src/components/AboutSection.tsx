@@ -11,7 +11,6 @@ type AboutSectionProps = {
   bioLong: string
   stats?: StatItem[]
   overlayColor: string
-  eyebrowStyle: CSSProperties
   bodyStyle: CSSProperties
   mutedStyle: CSSProperties
   valueColor: string
@@ -28,7 +27,6 @@ export function AboutSection({
   bioLong,
   stats,
   overlayColor,
-  eyebrowStyle,
   bodyStyle,
   mutedStyle,
   valueColor,
@@ -63,16 +61,13 @@ export function AboutSection({
         <FullBleedMedia src={image} type="image" alt="" />
       </div>
 
-      {/* Escurece de baixo pra cima — o rosto fica livre no topo da foto,
-          o texto (que agora mora na parte de baixo da tela) ganha contraste.
-          Base e topo ficam 100% sólidos por um trecho curto pra costurar
-          sem linha visível com a seção anterior (Hero) e a seguinte
-          (Portfólio) — a faixa do topo é rasa de propósito pra não cobrir
-          o rosto. */}
+      {/* Contraste só onde o texto precisa (embaixo) + uma borda bem rasa
+          nas duas pontas (~10-15%), sólida na cor do separador vizinho —
+          o resto da foto fica livre, sem cobrir rosto nem início da imagem. */}
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, ${overlayColor} 0%, ${overlayColor} 12%, ${overlayColor}C2 38%, transparent 75%, transparent 84%, ${overlayColor} 94%, ${overlayColor} 100%)`,
+          background: `linear-gradient(to top, ${overlayColor} 0%, ${overlayColor}D9 15%, ${overlayColor}99 35%, transparent 70%, transparent 90%, ${overlayColor} 100%)`,
         }}
       />
 
@@ -80,9 +75,6 @@ export function AboutSection({
           precisar de mais espaço, em vez de cortar. */}
       <div className="relative flex min-h-screen w-full flex-col items-center justify-end px-6 pb-16 sm:px-10 sm:pb-24">
         <ScrollFade className="mx-auto max-w-3xl text-center">
-          <span className="mb-6 block text-sm uppercase tracking-[0.2em] sm:text-base" style={eyebrowStyle}>
-            Sobre
-          </span>
           <p className="text-xl leading-relaxed sm:text-3xl" style={{ opacity: 0.92, ...bodyStyle }}>
             {bioLong}
           </p>

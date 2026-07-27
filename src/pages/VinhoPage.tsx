@@ -3,6 +3,7 @@ import { CTAButton } from '../components/CTAButton'
 import { VideoHero } from '../components/VideoHero'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
+import { SectionDivider } from '../components/SectionDivider'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
 
 const bg = '#1A1310'
@@ -42,11 +43,11 @@ export function VinhoPage() {
       />
 
       {/* Sobre */}
+      <SectionDivider label="Sobre" labelStyle={{ color: accent }} bg={bg} />
       <AboutSection
         image={images.rosto}
         bioLong={isabella.bioLong}
         overlayColor={bg}
-        eyebrowStyle={{ color: accent }}
         bodyStyle={{ ...body, color: ink }}
         mutedStyle={{ color: muted }}
         valueColor={ink}

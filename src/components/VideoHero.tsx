@@ -69,7 +69,7 @@ export function VideoHero({
       gsap
         .timeline({ defaults: { ease: 'power2.out' } })
         .fromTo(videoRef.current, { scale: 1.1 }, { scale: 1, duration: 1.6 }, 0)
-        .fromTo(overlayRef.current, { opacity: 0.25 }, { opacity: 0.85, duration: 1.2 }, 0)
+        .fromTo(overlayRef.current, { opacity: 0.25 }, { opacity: 1, duration: 1.2 }, 0)
         .fromTo(eyebrowRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, 0.1)
         .fromTo(titleRef.current, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7 }, 0.22)
         .fromTo(leadRef.current, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6 }, 0.38)
@@ -86,7 +86,7 @@ export function VideoHero({
         ref={overlayRef}
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, ${hexToRgba(colors.overlayTint, 0.92)}, ${hexToRgba(colors.overlayTint, 0.12)} 60%)`,
+          background: `linear-gradient(to top, ${colors.overlayTint} 0%, ${colors.overlayTint} 10%, ${hexToRgba(colors.overlayTint, 0.12)} 60%)`,
         }}
       />
 
