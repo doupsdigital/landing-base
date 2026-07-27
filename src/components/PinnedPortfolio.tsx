@@ -36,13 +36,14 @@ export function PinnedPortfolio({
           </div>
 
           {/* Topo e base ficam 100% sólidos (não quase-opacos) por um
-              trecho, com uma queda longa e suave — cor cheia encontrando a
-              mesma cor cheia da seção vizinha não deixa nenhuma linha
-              visível, ao contrário de duas bordas só "quase" escuras. */}
+              trecho curto — cor cheia encontrando a mesma cor cheia da
+              seção vizinha não deixa nenhuma linha visível. A faixa do
+              topo é rasa de propósito pra não cobrir a cabeça/rosto da
+              foto seguinte. */}
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(to bottom, ${overlayColor} 0%, ${overlayColor} 12%, transparent 30%, ${overlayColor}B3 50%, transparent 70%, ${overlayColor} 88%, ${overlayColor} 100%)`,
+              background: `linear-gradient(to bottom, ${overlayColor} 0%, ${overlayColor} 6%, transparent 16%, ${overlayColor}B3 50%, transparent 70%, ${overlayColor} 88%, ${overlayColor} 100%)`,
             }}
           />
 

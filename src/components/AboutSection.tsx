@@ -65,12 +65,14 @@ export function AboutSection({
 
       {/* Escurece de baixo pra cima — o rosto fica livre no topo da foto,
           o texto (que agora mora na parte de baixo da tela) ganha contraste.
-          A base fica 100% sólida por um trecho (não quase-opaca) pra
-          costurar sem linha visível com o item seguinte do portfólio. */}
+          Base e topo ficam 100% sólidos por um trecho curto pra costurar
+          sem linha visível com a seção anterior (Hero) e a seguinte
+          (Portfólio) — a faixa do topo é rasa de propósito pra não cobrir
+          o rosto. */}
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, ${overlayColor} 0%, ${overlayColor} 12%, ${overlayColor}C2 38%, transparent 75%)`,
+          background: `linear-gradient(to top, ${overlayColor} 0%, ${overlayColor} 12%, ${overlayColor}C2 38%, transparent 75%, transparent 84%, ${overlayColor} 94%, ${overlayColor} 100%)`,
         }}
       />
 
