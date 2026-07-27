@@ -39,12 +39,13 @@ export function PinnedPortfolio({
               <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
             </div>
 
-            {/* Contraste só no centro, pro texto — sem nada nas bordas. O
-                degradê de transição mora no SectionDivider, não na foto. */}
+            {/* Contraste no centro (pro texto) + um fio bem curto (~3%) nas
+                pontas só pra suavizar o encontro com o separador, sem
+                "invadir" a foto como antes. */}
             <div
               className="absolute inset-0"
               style={{
-                background: `linear-gradient(to bottom, transparent 0%, transparent 40%, ${overlayColor}99 50%, transparent 60%, transparent 100%)`,
+                background: `linear-gradient(to bottom, ${overlayColor} 0%, transparent 3%, transparent 40%, ${overlayColor}99 50%, transparent 60%, transparent 97%, ${overlayColor} 100%)`,
               }}
             />
 

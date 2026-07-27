@@ -34,7 +34,7 @@ function CoverHero() {
       gsap
         .timeline({ defaults: { ease: 'power2.out' } })
         .fromTo(videoRef.current, { scale: 1.1 }, { scale: 1, duration: 1.6 }, 0)
-        .fromTo(overlayRef.current, { opacity: 0.3 }, { opacity: 0.9, duration: 1.2 }, 0)
+        .fromTo(overlayRef.current, { opacity: 0.3 }, { opacity: 1, duration: 1.2 }, 0)
         .fromTo(eyebrowRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, 0.1)
         .fromTo(nameRef.current, { opacity: 0, y: 34, scale: 1.04 }, { opacity: 1, y: 0, scale: 1, duration: 0.8 }, 0.2)
         .fromTo(leadRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 }, 0.42)
@@ -57,7 +57,7 @@ function CoverHero() {
         ref={overlayRef}
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, ${hexToRgba(bg, 0.95)}, ${hexToRgba(bg, 0.15)} 55%)`,
+          background: `linear-gradient(to top, ${bg} 0%, ${bg} 3%, ${hexToRgba(bg, 0.15)} 55%)`,
         }}
       />
 
