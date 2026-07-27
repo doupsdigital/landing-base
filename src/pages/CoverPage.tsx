@@ -79,7 +79,7 @@ function CoverHero() {
         Modelo Comercial — São Paulo
       </span>
 
-      <div className="absolute inset-x-0 bottom-0 px-4 pb-10 text-center sm:px-10 sm:pb-14">
+      <div className="absolute inset-x-0 bottom-0 px-4 pb-[clamp(2.5rem,8vh,5rem)] text-center sm:px-10">
         <h1
           ref={nameRef}
           className="select-none text-[20vw] leading-[0.86] sm:text-[15vw] md:text-[clamp(4.5rem,13vw,11rem)]"
