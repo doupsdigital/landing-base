@@ -31,6 +31,9 @@ type VideoHeroProps = {
   stats: StatItem[]
   ctaLabel: string
   ctaHref: string
+  /** CTA secundário, opcional — link discreto ao lado do botão principal. */
+  ctaSecondaryLabel?: string
+  ctaSecondaryHref?: string
   colors: VideoHeroColors
   displayFont: CSSProperties
   bodyFont: CSSProperties
@@ -49,6 +52,8 @@ export function VideoHero({
   stats,
   ctaLabel,
   ctaHref,
+  ctaSecondaryLabel,
+  ctaSecondaryHref,
   colors,
   displayFont,
   bodyFont,
@@ -140,7 +145,7 @@ export function VideoHero({
           ))}
         </div>
 
-        <div ref={ctaRef} className="mt-9">
+        <div ref={ctaRef} className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
           <CTAButton
             href={ctaHref}
             className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
@@ -148,6 +153,15 @@ export function VideoHero({
           >
             {ctaLabel}
           </CTAButton>
+          {ctaSecondaryLabel ? (
+            <CTAButton
+              href={ctaSecondaryHref ?? ctaHref}
+              className="text-[13px] uppercase tracking-[0.08em] underline underline-offset-4 opacity-80 transition-opacity hover:opacity-100"
+              style={{ color: colors.text, ...dataFont }}
+            >
+              {ctaSecondaryLabel}
+            </CTAButton>
+          ) : null}
         </div>
       </div>
     </section>

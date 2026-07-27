@@ -5,6 +5,7 @@ import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
 import { SectionDivider } from '../components/SectionDivider'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
+import type { VinhoVariation } from '../content/vinhoVariations'
 
 const bg = '#1A1310'
 const ink = '#F3ECE4'
@@ -16,20 +17,41 @@ const vinho = '#6E1F2A'
 const display = { fontFamily: "'Playfair Display', serif", color: ink }
 const body = { fontFamily: "'Inter', sans-serif" }
 
-export function VinhoPage() {
+type VinhoPageProps = {
+  /** Variação de copy (rotas /vinho-v1..v5). Sem isso, usa o conteúdo padrão. */
+  variation?: VinhoVariation
+}
+
+export function VinhoPage({ variation }: VinhoPageProps) {
+  const title = variation?.headline ?? 'Isabella Marques'
+  const lead = variation?.subheadline ?? isabella.bioShort
+  const bioLong = variation?.sobre ?? isabella.bioLong
+  const ctaPrimary = variation?.ctaPrimary ?? 'Falar no WhatsApp'
+  const ctaSecondary = variation?.ctaSecondary
+
+  const portfolioItems = variation
+    ? portfolio.map((item, i) => ({
+        ...item,
+        caption: `${variation.portfolio[i].title}.`,
+        description: variation.portfolio[i].description,
+      }))
+    : portfolio
+
   return (
     <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
       <VideoHero
         videoSrc={heroVideos.vinho}
         eyebrow="Modelo Comercial — São Paulo"
-        title="Isabella Marques"
+        title={title}
         titleClassName="text-[clamp(2.5rem,7vw,6rem)] leading-[1.02]"
-        lead={isabella.bioShort}
+        lead={lead}
         location={isabella.location.split(',')[0]}
         locationLabel={isabella.locationLabel}
         stats={isabella.socialStats}
-        ctaLabel="Falar no WhatsApp"
+        ctaLabel={ctaPrimary}
         ctaHref={isabella.contactHref}
+        ctaSecondaryLabel={ctaSecondary}
+        ctaSecondaryHref={isabella.contactHref}
         colors={{
           overlayTint: bg,
           text: ink,
@@ -46,7 +68,7 @@ export function VinhoPage() {
       <SectionDivider label="Sobre" labelStyle={{ color: accent }} bg={bg} />
       <AboutSection
         image={images.rosto}
-        bioLong={isabella.bioLong}
+        bioLong={bioLong}
         overlayColor={bg}
         bodyStyle={{ ...body, color: ink }}
         mutedStyle={{ color: muted }}
@@ -55,7 +77,7 @@ export function VinhoPage() {
 
       {/* Portfólio — pinado */}
       <PinnedPortfolio
-        items={portfolio}
+        items={portfolioItems}
         eyebrow="Portfólio"
         eyebrowStyle={{ ...body, color: accent }}
         captionStyle={{ ...display }}
@@ -88,14 +110,23 @@ export function VinhoPage() {
           <h2 style={display} className="text-[clamp(2rem,5vw,4rem)]">
             Vamos criar juntos.
           </h2>
-          <div className="mt-8 inline-block">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
             <CTAButton
               href={isabella.contactHref}
               className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
               style={{ backgroundColor: vinho, color: ink }}
             >
-              Falar no WhatsApp
+              {ctaPrimary}
             </CTAButton>
+            {ctaSecondary ? (
+              <CTAButton
+                href={isabella.contactHref}
+                className="text-[13px] uppercase tracking-[0.08em] underline underline-offset-4 opacity-80 transition-opacity hover:opacity-100"
+                style={{ color: ink }}
+              >
+                {ctaSecondary}
+              </CTAButton>
+            ) : null}
           </div>
         </ScrollFade>
       </section>
