@@ -64,11 +64,13 @@ export function AboutSection({
       </div>
 
       {/* Escurece de baixo pra cima — o rosto fica livre no topo da foto,
-          o texto (que agora mora na parte de baixo da tela) ganha contraste. */}
+          o texto (que agora mora na parte de baixo da tela) ganha contraste.
+          A base fica 100% sólida por um trecho (não quase-opaca) pra
+          costurar sem linha visível com o item seguinte do portfólio. */}
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, ${overlayColor}F2 0%, ${overlayColor}C2 38%, ${overlayColor}00 75%)`,
+          background: `linear-gradient(to top, ${overlayColor} 0%, ${overlayColor} 12%, ${overlayColor}C2 38%, transparent 75%)`,
         }}
       />
 
