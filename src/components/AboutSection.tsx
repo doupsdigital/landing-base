@@ -61,12 +61,12 @@ export function AboutSection({
         <FullBleedMedia src={image} type="image" alt="" />
       </div>
 
-      {/* Contraste embaixo (pro texto) + um fio bem curto (~5%) no topo só
-          pra suavizar o encontro com o separador, sem cobrir o rosto. */}
+      {/* Contraste só embaixo, pro texto — sem nada no topo. O degradê de
+          transição mora no SectionDivider, não na foto. */}
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, ${overlayColor}D9 0%, ${overlayColor}99 25%, transparent 60%, transparent 95%, ${overlayColor} 100%)`,
+          background: `linear-gradient(to top, ${overlayColor}D9 0%, ${overlayColor}99 25%, transparent 60%)`,
         }}
       />
 
