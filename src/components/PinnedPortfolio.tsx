@@ -1,8 +1,6 @@
 import type { CSSProperties } from 'react'
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { FullBleedMedia } from './FullBleedMedia'
-import { ScrollFade } from './ScrollFade'
-import { gsap } from '../lib/gsap'
 import type { PortfolioItem } from '../content/isabella'
 
 type PinnedPortfolioProps = {
@@ -14,16 +12,19 @@ type PinnedPortfolioProps = {
   overlayColor?: string
 }
 
-/** Quanto do scroll (em % da altura da tela) dura o crossfade entre um item e o próximo. */
-const FADE_VH = 60
+/** Fração da seção visível pra ela virar a "ativa" (só uma pode passar disso por vez, já que cada seção e o scroller têm exatamente 100vh). */
+const ACTIVE_THRESHOLD = 0.6
 
 /**
- * Cada item fica preso na tela (`position: sticky`, nativo do CSS — não
- * `ScrollTrigger.pin`, que já causou blocos pretos e travamento no scroll
- * mobile real numa tentativa anterior) enquanto o item seguinte, sobreposto
- * por cima com z-index maior, faz fade-in conforme o usuário rola. O texto
- * mora dentro da mesma camada que recebe o fade, então troca junto com a
- * imagem/vídeo, sem separador nenhum entre os itens.
+ * Cada item ocupa a tela toda dentro de um scroller com scroll-snap nativo
+ * do CSS (`scroll-snap-type`, não `ScrollTrigger.pin` nem scrub — isso já
+ * causou instabilidade/bugs de scroll no mobile em tentativas anteriores).
+ * O navegador garante que uma rolagem sempre encaixa exatamente na seção
+ * seguinte, inclusive em rolagens fortes (`snap-always` força parar em
+ * cada uma, não pula direto pra mais longe). A seção que "encaixou" é
+ * detectada por IntersectionObserver e recebe um fade de opacidade com
+ * duração fixa via CSS — não é escrubado pelo dedo, então a transição
+ * sempre completa do mesmo jeito, não importa a velocidade do gesto.
  */
 export function PinnedPortfolio({
   items,
@@ -33,42 +34,32 @@ export function PinnedPortfolio({
   descriptionStyle,
   overlayColor = '#000000',
 }: PinnedPortfolioProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const boxRefs = useRef<(HTMLDivElement | null)[]>([])
-  const layerRefs = useRef<(HTMLDivElement | null)[]>([])
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  const itemRefs = useRef<(HTMLElement | null)[]>([])
+  const [activeIndex, setActiveIndex] = useState(0)
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      items.forEach((_, i) => {
-        if (i === 0) return
-        const box = boxRefs.current[i]
-        const layer = layerRefs.current[i]
-        if (!box || !layer) return
+  useEffect(() => {
+    const scroller = scrollerRef.current
+    if (!scroller) return
 
-        gsap.fromTo(
-          layer,
-          { opacity: 0 },
-          {
-            opacity: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: box,
-              start: 'top top',
-              end: () => `+=${window.innerHeight * (FADE_VH / 100)}`,
-              scrub: 1,
-            },
-          },
-        )
-      })
-    }, containerRef)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio < ACTIVE_THRESHOLD) return
+          const index = itemRefs.current.indexOf(entry.target as HTMLElement)
+          if (index !== -1) setActiveIndex(index)
+        })
+      },
+      { root: scroller, threshold: ACTIVE_THRESHOLD },
+    )
 
-    return () => ctx.revert()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    itemRefs.current.forEach((el) => el && observer.observe(el))
+    return () => observer.disconnect()
+  }, [items.length])
 
   return (
-    <div ref={containerRef} className="relative w-full">
-      <div className="pointer-events-none sticky top-6 z-50 flex justify-center sm:top-8">
+    <div className="relative w-full">
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-50 flex justify-center sm:top-8">
         <span
           className="text-sm uppercase tracking-[0.3em] sm:text-base"
           style={{ ...eyebrowStyle, textShadow: '0 1px 16px rgba(0,0,0,0.7)' }}
@@ -77,68 +68,43 @@ export function PinnedPortfolio({
         </span>
       </div>
 
-      {items.map((item, i) => {
-        const isFirst = i === 0
-        const isLast = i === items.length - 1
-
-        const textBlock = (
-          <>
-            <h3 className="text-[clamp(2.75rem,5vw,3.75rem)] leading-[1.05]" style={captionStyle}>
-              {item.caption}
-            </h3>
-            {item.description ? (
-              <p
-                className="mt-5 max-w-xl text-lg leading-relaxed sm:mt-6 sm:max-w-2xl sm:text-xl"
-                style={{ opacity: 0.88, ...descriptionStyle }}
-              >
-                {item.description}
-              </p>
-            ) : null}
-          </>
-        )
-
-        return (
-          <div
+      <div ref={scrollerRef} className="h-screen w-full snap-y snap-mandatory overflow-y-scroll">
+        {items.map((item, i) => (
+          <section
             key={i}
             ref={(el) => {
-              boxRefs.current[i] = el
+              itemRefs.current[i] = el
             }}
-            className="relative w-full"
-            style={{
-              height: isLast ? '100vh' : `calc(100vh + ${FADE_VH}vh)`,
-              marginTop: isFirst ? 0 : `-${FADE_VH}vh`,
-              zIndex: i,
-            }}
+            className="relative h-screen w-full snap-start snap-always overflow-hidden transition-opacity duration-700 ease-out"
+            style={{ opacity: i === activeIndex ? 1 : 0 }}
           >
-            <div className="sticky top-0 h-screen w-full overflow-hidden">
-              <div
-                ref={
-                  isFirst
-                    ? undefined
-                    : (el) => {
-                        layerRefs.current[i] = el
-                      }
-                }
-                className="absolute inset-0"
-              >
-                <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
-
-                {/* Vinheta constante — legibilidade do texto, presente em toda seção, não só na transição. */}
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: `linear-gradient(to bottom, ${overlayColor}66 0%, transparent 22%, transparent 45%, ${overlayColor}99 55%, transparent 78%, ${overlayColor}66 100%)`,
-                  }}
-                />
-
-                <div className="absolute inset-x-6 top-1/2 max-w-3xl -translate-y-1/2 sm:inset-x-10 md:inset-x-16">
-                  {isFirst ? <ScrollFade>{textBlock}</ScrollFade> : textBlock}
-                </div>
-              </div>
+            <div className="absolute inset-0">
+              <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
             </div>
-          </div>
-        )
-      })}
+
+            <div
+              className="absolute inset-0"
+              style={{
+                background: `linear-gradient(to bottom, ${overlayColor}66 0%, transparent 22%, transparent 45%, ${overlayColor}99 55%, transparent 78%, ${overlayColor}66 100%)`,
+              }}
+            />
+
+            <div className="absolute inset-x-6 top-1/2 max-w-3xl -translate-y-1/2 sm:inset-x-10 md:inset-x-16">
+              <h3 className="text-[clamp(2.75rem,5vw,3.75rem)] leading-[1.05]" style={captionStyle}>
+                {item.caption}
+              </h3>
+              {item.description ? (
+                <p
+                  className="mt-5 max-w-xl text-lg leading-relaxed sm:mt-6 sm:max-w-2xl sm:text-xl"
+                  style={{ opacity: 0.88, ...descriptionStyle }}
+                >
+                  {item.description}
+                </p>
+              ) : null}
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   )
 }
