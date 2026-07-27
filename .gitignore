@@ -1,0 +1,32 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Material bruto do cliente (prints, bio, fotos/vídeos originais) — não
+# versionado por convenção deste template (ver CLAUDE.md). Os ativos já
+# processados/usados no site vivem em src/assets/.
+Context/
+
+# Config local de sessão do harness, não é config de projeto intencional
+.claude/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
