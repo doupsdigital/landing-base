@@ -74,7 +74,7 @@ export function AboutSection({
           precisar de mais espaço, em vez de cortar. */}
       <div className="relative flex min-h-screen w-full flex-col items-center justify-end px-6 pb-16 sm:px-10 sm:pb-24">
         <ScrollFade className="mx-auto max-w-3xl text-center">
-          <p className="text-xl leading-relaxed sm:text-3xl" style={{ opacity: 0.92, ...bodyStyle }}>
+          <p className="text-xl leading-relaxed sm:text-2xl" style={{ opacity: 0.92, ...bodyStyle }}>
             {bioLong}
           </p>
           {stats && stats.length > 0 ? (

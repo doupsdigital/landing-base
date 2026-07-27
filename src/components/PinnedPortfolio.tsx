@@ -49,17 +49,17 @@ export function PinnedPortfolio({
               }}
             />
 
-            <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 sm:inset-x-10 md:inset-x-16">
+            <div className="absolute inset-x-6 top-1/2 max-w-3xl -translate-y-1/2 sm:inset-x-10 md:inset-x-16">
               <ScrollFade>
                 <h3
-                  className="text-[clamp(2.75rem,7vw,5.5rem)] leading-[1.05]"
+                  className="text-[clamp(2.75rem,5vw,3.75rem)] leading-[1.05]"
                   style={captionStyle}
                 >
                   {item.caption}
                 </h3>
                 {item.description ? (
                   <p
-                    className="mt-5 max-w-xl text-lg leading-relaxed sm:mt-6 sm:max-w-2xl sm:text-2xl"
+                    className="mt-5 max-w-xl text-lg leading-relaxed sm:mt-6 sm:max-w-2xl sm:text-xl"
                     style={{ opacity: 0.88, ...descriptionStyle }}
                   >
                     {item.description}
