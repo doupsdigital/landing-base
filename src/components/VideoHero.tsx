@@ -86,7 +86,7 @@ export function VideoHero({
         ref={overlayRef}
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, ${colors.overlayTint} 0%, ${colors.overlayTint} 10%, ${hexToRgba(colors.overlayTint, 0.12)} 60%)`,
+          background: `linear-gradient(to top, ${colors.overlayTint} 0%, ${colors.overlayTint} 5%, ${hexToRgba(colors.overlayTint, 0.12)} 60%)`,
         }}
       />
 

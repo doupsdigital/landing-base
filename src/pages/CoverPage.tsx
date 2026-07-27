@@ -57,7 +57,7 @@ function CoverHero() {
         ref={overlayRef}
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(to top, ${bg} 0%, ${bg} 10%, ${hexToRgba(bg, 0.15)} 55%)`,
+          background: `linear-gradient(to top, ${bg} 0%, ${bg} 5%, ${hexToRgba(bg, 0.15)} 55%)`,
         }}
       />
 
