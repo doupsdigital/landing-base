@@ -6,6 +6,13 @@ type FullBleedMediaProps = {
   alt: string
   className?: string
   mediaRef?: Ref<HTMLVideoElement>
+  /**
+   * A maioria da mídia deste projeto é 9:16 (retrato) — ver comentário abaixo.
+   * `landscape` inverte o tratamento pra mídia 16:9: cobre a tela cheia no
+   * desktop (onde o enquadramento já é largo) e usa a borda borrada só no
+   * mobile (onde um vídeo largo cortado com `object-cover` perderia a cena).
+   */
+  orientation?: 'portrait' | 'landscape'
 }
 
 /**
@@ -16,10 +23,22 @@ type FullBleedMediaProps = {
  * tela toda sem destruir o enquadramento original. No mobile o viewport já é
  * ~retrato, então a camada nítida cobre 100% sozinha e a borrada nem renderiza.
  */
-export function FullBleedMedia({ src, type, alt, className = '', mediaRef }: FullBleedMediaProps) {
+export function FullBleedMedia({
+  src,
+  type,
+  alt,
+  className = '',
+  mediaRef,
+  orientation = 'portrait',
+}: FullBleedMediaProps) {
   const blurClassName =
-    'hidden h-full w-full scale-110 object-cover blur-[60px] brightness-[0.55] saturate-150 md:block'
-  const crispClassName = 'h-full w-full object-cover md:h-full md:w-auto md:max-w-none md:object-contain'
+    orientation === 'landscape'
+      ? 'block h-full w-full scale-110 object-cover blur-[60px] brightness-[0.55] saturate-150 md:hidden'
+      : 'hidden h-full w-full scale-110 object-cover blur-[60px] brightness-[0.55] saturate-150 md:block'
+  const crispClassName =
+    orientation === 'landscape'
+      ? 'h-full w-full object-contain md:h-full md:w-full md:max-w-none md:object-cover'
+      : 'h-full w-full object-cover md:h-full md:w-auto md:max-w-none md:object-contain'
 
   return (
     <div className={`relative h-full w-full overflow-hidden ${className}`}>

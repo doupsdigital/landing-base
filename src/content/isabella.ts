@@ -11,6 +11,7 @@ import videoFitness from '../assets/videos/isabella-fitness.mp4'
 import video09 from '../assets/videos/isabella-09.mp4'
 import video10 from '../assets/videos/isabella-10.mp4'
 import video11 from '../assets/videos/isabella-11.mp4'
+import video10Landscape from '../assets/videos/Isabella - 10 - novo - Landscape.mp4'
 
 export const images = {
   rosto,
@@ -28,6 +29,7 @@ export const videos = {
   v09: video09,
   v10: video10,
   v11: video11,
+  v10Landscape: video10Landscape,
 }
 
 // Vídeo de abertura (hero full-bleed) de cada uma das 5 direções visuais.

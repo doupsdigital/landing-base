@@ -10,6 +10,8 @@ type PinnedPortfolioProps = {
   captionStyle: CSSProperties
   descriptionStyle?: CSSProperties
   overlayColor?: string
+  /** Escurece a mídia (foto/vídeo) de cada item (`filter: brightness`), pra dar mais destaque ao texto. Padrão: 1 (sem alteração). */
+  mediaBrightness?: number
 }
 
 /** Fração da seção visível pra ela virar a "ativa" (só uma pode passar disso por vez, já que cada seção tem exatamente 100vh). */
@@ -33,9 +35,13 @@ export function PinnedPortfolio({
   captionStyle,
   descriptionStyle,
   overlayColor = '#000000',
+  mediaBrightness = 1,
 }: PinnedPortfolioProps) {
   const itemRefs = useRef<(HTMLElement | null)[]>([])
-  const [activeIndex, setActiveIndex] = useState(0)
+  // Começa em -1 (nenhum item "ativo" ainda) em vez de 0: se o primeiro item
+  // já nascesse ativo, a entrada nele nunca disparia a transição CSS (que só
+  // anima em mudança de estado, não na primeira renderização).
+  const [activeIndex, setActiveIndex] = useState(-1)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -73,18 +79,25 @@ export function PinnedPortfolio({
           className="relative h-screen w-full snap-start snap-always overflow-hidden transition-opacity duration-700 ease-out"
           style={{ opacity: i === activeIndex ? 1 : 0 }}
         >
-          <div className="absolute inset-0">
+          <div className="absolute inset-0" style={{ filter: `brightness(${mediaBrightness})` }}>
             <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
           </div>
 
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(to bottom, ${overlayColor}66 0%, transparent 22%, transparent 45%, ${overlayColor}99 55%, transparent 78%, ${overlayColor}66 100%)`,
+              background: `linear-gradient(to bottom, ${overlayColor}66 0%, transparent 20%, transparent 80%, ${overlayColor}66 100%)`,
             }}
           />
 
-          <div className="absolute inset-x-6 top-1/2 max-w-3xl -translate-y-1/2 sm:inset-x-10 md:inset-x-16">
+          <div
+            className="absolute inset-x-6 top-1/2 max-w-3xl transition-[opacity,transform] duration-1000 ease-out sm:inset-x-10 md:inset-x-16"
+            style={{
+              opacity: i === activeIndex ? 1 : 0,
+              transform: `translateY(${i === activeIndex ? '-50%' : '-40%'})`,
+              transitionDelay: i === activeIndex ? '350ms' : '0ms',
+            }}
+          >
             <h3 className="text-[clamp(2.75rem,5vw,3.75rem)] leading-[1.05]" style={captionStyle}>
               {item.caption}
             </h3>

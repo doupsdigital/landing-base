@@ -1,10 +1,13 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { gsap } from '../lib/gsap'
 import { hexToRgba } from '../lib/color'
 import { CTAButton } from './CTAButton'
 import { FullBleedMedia } from './FullBleedMedia'
+
+/** Fração da seção visível pra disparar o replay — mesmo valor usado no Portfólio. */
+const ACTIVE_THRESHOLD = 0.6
 
 type StatItem = { value: string; label: string }
 
@@ -40,6 +43,10 @@ type VideoHeroProps = {
   /** Fonte de eyebrow, labels de stats e CTA. Padrão: bodyFont. */
   labelFont?: CSSProperties
   titleClassName?: string
+  /** Vídeo de fundo em 16:9 em vez do padrão 9:16 do projeto — ver FullBleedMedia. */
+  videoOrientation?: 'portrait' | 'landscape'
+  /** Reanima o texto (com 350ms de atraso) toda vez que a seção volta a ficar visível no scroll, em vez de tocar só uma vez no load. Padrão: false. */
+  replayOnScroll?: boolean
 }
 
 export function VideoHero({
@@ -59,8 +66,11 @@ export function VideoHero({
   bodyFont,
   labelFont,
   titleClassName = 'text-[clamp(2.5rem,7vw,5.5rem)] leading-[1.02]',
+  videoOrientation = 'portrait',
+  replayOnScroll = false,
 }: VideoHeroProps) {
   const dataFont = labelFont ?? bodyFont
+  const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
   const eyebrowRef = useRef<HTMLDivElement>(null)
@@ -68,25 +78,55 @@ export function VideoHero({
   const leadRef = useRef<HTMLParagraphElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
+  const timelineRef = useRef<gsap.core.Timeline | null>(null)
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap
-        .timeline({ defaults: { ease: 'power2.out' } })
+      const tl = gsap
+        .timeline({ paused: replayOnScroll, delay: replayOnScroll ? 0.35 : 0, defaults: { ease: 'power2.out' } })
         .fromTo(videoRef.current, { scale: 1.1 }, { scale: 1, duration: 1.6 }, 0)
         .fromTo(overlayRef.current, { opacity: 0.25 }, { opacity: 1, duration: 1.2 }, 0)
-        .fromTo(eyebrowRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, 0.1)
-        .fromTo(titleRef.current, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7 }, 0.22)
-        .fromTo(leadRef.current, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6 }, 0.38)
-        .fromTo(statsRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 }, 0.5)
-        .fromTo(ctaRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 0.62)
+        .fromTo(eyebrowRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, 0)
+        .fromTo(titleRef.current, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7 }, 0.35)
+        .fromTo(leadRef.current, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6 }, 0.7)
+        .fromTo(statsRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 }, 1.05)
+        .fromTo(ctaRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 1.4)
+      timelineRef.current = tl
+      if (!replayOnScroll) tl.play()
     })
     return () => ctx.revert()
-  }, [])
+  }, [replayOnScroll])
+
+  // Sem isso, a animação só toca uma vez no load — replayOnScroll reanima
+  // toda vez que a seção volta a ficar visível (ex: rolando de volta pra
+  // cima a partir da seção Sobre), igual ao Portfólio.
+  useEffect(() => {
+    if (!replayOnScroll) return
+    const section = sectionRef.current
+    if (!section) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio >= ACTIVE_THRESHOLD) timelineRef.current?.restart()
+        })
+      },
+      { threshold: ACTIVE_THRESHOLD },
+    )
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [replayOnScroll])
 
   return (
-    <section className="relative h-screen w-full snap-start snap-always overflow-hidden">
-      <FullBleedMedia src={videoSrc} type="video" alt="" mediaRef={videoRef} className="absolute inset-0" />
+    <section ref={sectionRef} className="relative h-screen w-full snap-start snap-always overflow-hidden">
+      <FullBleedMedia
+        src={videoSrc}
+        type="video"
+        alt=""
+        mediaRef={videoRef}
+        className="absolute inset-0"
+        orientation={videoOrientation}
+      />
       <div
         ref={overlayRef}
         className="absolute inset-0"
