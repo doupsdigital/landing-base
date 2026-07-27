@@ -35,10 +35,13 @@ export function PinnedPortfolio({
             <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
           </div>
 
+          {/* Escurece também o topo e a base (não só o centro, pra
+              legibilidade do texto) — cria uma "costura" escura com a
+              seção anterior/seguinte em vez de um corte seco entre fotos. */}
           <div
             className="absolute inset-0"
             style={{
-              background: `linear-gradient(to bottom, ${overlayColor}00 0%, ${overlayColor}B8 32%, ${overlayColor}CC 50%, ${overlayColor}B8 68%, ${overlayColor}00 100%)`,
+              background: `linear-gradient(to bottom, ${overlayColor}F0 0%, ${overlayColor}55 12%, ${overlayColor}B8 32%, ${overlayColor}CC 50%, ${overlayColor}B8 68%, ${overlayColor}55 88%, ${overlayColor}F0 100%)`,
             }}
           />
 
