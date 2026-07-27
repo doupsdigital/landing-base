@@ -23,7 +23,6 @@ type VideoHeroColors = {
 
 type VideoHeroProps = {
   videoSrc: string
-  name: string
   eyebrow: string
   title: string
   lead: string
@@ -35,15 +34,13 @@ type VideoHeroProps = {
   colors: VideoHeroColors
   displayFont: CSSProperties
   bodyFont: CSSProperties
-  /** Fonte de eyebrow, labels de stats, botão Contato e CTA. Padrão: bodyFont. */
+  /** Fonte de eyebrow, labels de stats e CTA. Padrão: bodyFont. */
   labelFont?: CSSProperties
   titleClassName?: string
-  contactAnchor?: string
 }
 
 export function VideoHero({
   videoSrc,
-  name,
   eyebrow,
   title,
   lead,
@@ -57,7 +54,6 @@ export function VideoHero({
   bodyFont,
   labelFont,
   titleClassName = 'text-[clamp(2.5rem,7vw,5.5rem)] leading-[1.02]',
-  contactAnchor = '#contato',
 }: VideoHeroProps) {
   const dataFont = labelFont ?? bodyFont
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -94,35 +90,15 @@ export function VideoHero({
         }}
       />
 
-      {/* Barra fixa — nome + contato, sempre visível */}
-      <div
-        className="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-4 px-5 py-4 sm:px-10"
-        style={{
-          backgroundColor: hexToRgba(colors.overlayTint, 0.55),
-          backdropFilter: 'blur(6px)',
-          borderBottom: `1px solid ${hexToRgba(colors.text, 0.12)}`,
-        }}
+      {/* Navegação temporária de testes — some quando as rotas de exemplo saírem */}
+      <Link
+        to="/"
+        aria-label="Voltar"
+        className="fixed left-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full text-lg no-underline transition-opacity hover:opacity-80 sm:left-6 sm:top-6"
+        style={{ backgroundColor: hexToRgba(colors.overlayTint, 0.55), color: colors.text, backdropFilter: 'blur(6px)' }}
       >
-        <div className="flex items-center gap-3 sm:gap-5">
-          <Link
-            to="/"
-            className="text-[11px] uppercase tracking-[0.14em] no-underline opacity-70 transition-opacity hover:opacity-100"
-            style={{ color: colors.mutedText }}
-          >
-            ← Direções
-          </Link>
-          <span className="text-sm sm:text-base" style={{ ...displayFont, color: colors.text }}>
-            {name}
-          </span>
-        </div>
-        <a
-          href={contactAnchor}
-          className="rounded-full border px-5 py-2 text-[11px] uppercase tracking-[0.12em] no-underline transition-opacity hover:opacity-80"
-          style={{ borderColor: hexToRgba(colors.text, 0.5), color: colors.text, ...dataFont }}
-        >
-          Contato
-        </a>
-      </div>
+        ←
+      </Link>
 
       <div className="absolute inset-x-0 bottom-0 px-6 pb-12 sm:px-10 sm:pb-16 md:px-16">
         <div ref={eyebrowRef} className="mb-4 flex items-center gap-3">

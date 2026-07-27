@@ -80,31 +80,23 @@ export type PortfolioItem =
   | { type: 'image'; src: string; alt: string; caption: string; description?: string }
   | { type: 'video'; src: string; poster?: string; alt: string; caption: string; description?: string }
 
-// Alterna estritamente imagem/vídeo (temos 4 de cada) — evita ter dois
-// vídeos adjacentes na sequência fixada do portfólio, que era a causa mais
-// provável do glitch de compositing (vídeo/imagem trocando de camada) no
-// crossfade durante o scroll.
+// Alterna estritamente imagem/vídeo — evita ter dois vídeos adjacentes na
+// sequência fixada do portfólio, que era a causa mais provável do glitch
+// de compositing (vídeo/imagem trocando de camada) no crossfade durante
+// o scroll.
 export const portfolio: PortfolioItem[] = [
   {
-    type: 'image',
-    src: images.fashion02,
-    alt: 'Isabella em ensaio de estúdio, look casual chic',
+    type: 'video',
+    src: videos.v11,
+    alt: 'Isabella em movimento, produção de moda',
     caption: 'Provador.',
     description:
       'Para marcas e lojas que precisam mostrar como a peça se comporta no corpo: caimento, textura e atitude registrados com naturalidade editorial, prontos para transformar vitrine em desejo de compra.',
   },
   {
-    type: 'video',
-    src: videos.v11,
-    alt: 'Isabella em movimento, produção de moda',
-    caption: 'Publicidade.',
-    description:
-      'Campanhas que unem estratégia de marca e presença de tela — produções pensadas para comunicar posicionamento, gerar recall e sustentar uma imagem consistente em qualquer canal.',
-  },
-  {
     type: 'image',
-    src: images.skirt11,
-    alt: 'Isabella em produção de moda, conjunto branco e verde-oliva',
+    src: images.fashion02,
+    alt: 'Isabella em ensaio de estúdio, look casual chic',
     caption: 'Look do dia.',
     description:
       'Produções diárias que traduzem tendência em estilo pessoal — um olhar próximo e autêntico sobre moda, pensado para aproximar a marca do público sem perder o padrão editorial.',
@@ -113,9 +105,9 @@ export const portfolio: PortfolioItem[] = [
     type: 'video',
     src: videos.v09,
     alt: 'Isabella em still de beleza editorial',
-    caption: 'Recebidos.',
+    caption: 'Publicidade.',
     description:
-      'Cada envio ganha uma narrativa própria: unboxing e apresentação de produto com curadoria visual refinada, construída para valorizar a marca e criar conexão genuína com quem assiste.',
+      'Campanhas que unem estratégia de marca e presença de tela — produções pensadas para comunicar posicionamento, gerar recall e sustentar uma imagem consistente em qualquer canal.',
   },
   {
     type: 'image',
@@ -124,11 +116,5 @@ export const portfolio: PortfolioItem[] = [
     caption: 'Criação de Conteúdo.',
     description:
       'Do conceito à entrega, uma produção autoral e fluida para redes sociais e ativações de marca, mantendo consistência estética e gerando engajamento real.',
-  },
-  {
-    type: 'video',
-    src: videos.v10,
-    alt: 'Isabella em vestido, rooftop à noite',
-    caption: 'Noite.',
   },
 ]

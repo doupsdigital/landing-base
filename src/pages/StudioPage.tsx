@@ -20,7 +20,6 @@ export function StudioPage() {
     <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
       <VideoHero
         videoSrc={heroVideos.studio}
-        name={isabella.name}
         eyebrow="Modelo Comercial — São Paulo"
         title="Isabella Marques"
         titleClassName="text-[clamp(2.25rem,6vw,4rem)] leading-[1.02]"

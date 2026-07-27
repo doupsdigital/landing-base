@@ -20,7 +20,6 @@ export function VinhoPage() {
     <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
       <VideoHero
         videoSrc={heroVideos.vinho}
-        name={isabella.name}
         eyebrow="Modelo Comercial — São Paulo"
         title="Isabella Marques"
         titleClassName="text-[clamp(2.5rem,7vw,6rem)] leading-[1.02]"

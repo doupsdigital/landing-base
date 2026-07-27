@@ -33,7 +33,6 @@ export function RivieraPage() {
     <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
       <VideoHero
         videoSrc={heroVideos.riviera}
-        name={isabella.name}
         eyebrow="Modelo Comercial — São Paulo"
         title="Isabella Marques"
         titleClassName="text-[clamp(2.5rem,7vw,5.25rem)] leading-[1.02]"

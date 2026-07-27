@@ -31,6 +31,14 @@ function Word({
   )
 }
 
+/**
+ * Cada item é um painel próprio dentro de um scroller nativo com CSS Scroll
+ * Snap (`snap-y snap-mandatory` + `snap-always`) — 1 gesto de scroll sempre
+ * encaixa exatamente no próximo item, sem pular vários de uma vez num flick
+ * forte, e sem o crossfade empilhado que causava sobreposição ao ir/voltar
+ * rápido. O texto usa scrub vinculado à posição real do scroll dentro desse
+ * mesmo scroller, então reverte sozinho e de forma suave ao rolar pra cima.
+ */
 export function PinnedPortfolio({
   items,
   eyebrow,
@@ -39,105 +47,80 @@ export function PinnedPortfolio({
   descriptionStyle,
   overlayColor = '#000000',
 }: PinnedPortfolioProps) {
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const scrollerRef = useRef<HTMLDivElement>(null)
+  const itemRefs = useRef<Array<HTMLDivElement | null>>([])
   const mediaRefs = useRef<Array<HTMLDivElement | null>>([])
-  // Todas as palavras (título + descrição) de cada item, na ordem em que
-  // aparecem — é nessa lista que o stagger do scroll atua, palavra por
-  // palavra, em vez de mostrar o bloco inteiro de uma vez.
   const wordRefs = useRef<HTMLSpanElement[][]>([])
 
   useLayoutEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
-    const media = mediaRefs.current.filter((el): el is HTMLDivElement => Boolean(el))
-    if (media.length === 0) return
+    const scroller = scrollerRef.current
+    if (!scroller) return
 
     const ctx = gsap.context(() => {
-      gsap.set(media, { opacity: 0 })
-      gsap.set(media[0], { opacity: 1 })
-
-      const allWords = wordRefs.current.flat()
-      gsap.set(allWords, { opacity: 0, y: -16 })
-      gsap.set(wordRefs.current[0], { opacity: 1, y: 0 })
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => `+=${items.length * 100}%`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-        },
-      })
-
       items.forEach((_, i) => {
-        if (i === items.length - 1) return
-        const t = i
-        tl.to(
-          wordRefs.current[i],
-          { opacity: 0, y: 16, ease: 'none', duration: 0.12, stagger: { amount: 0.08 } },
-          t + 0.04,
-        )
-          .to(media[i], { opacity: 0, ease: 'none', duration: 0.2 }, t + 0.04)
-          .to(media[i + 1], { opacity: 1, ease: 'none', duration: 0.2 }, t + 0.04)
-          .to(
-            wordRefs.current[i + 1],
-            { opacity: 1, y: 0, ease: 'none', duration: 0.3, stagger: { amount: 0.4 } },
-            t + 0.2,
-          )
+        const item = itemRefs.current[i]
+        const media = mediaRefs.current[i]
+        const words = wordRefs.current[i]
+        if (!item) return
+
+        gsap.set(words, { opacity: 0, y: -16 })
+        if (media) gsap.set(media, { scale: 1.08 })
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: item,
+            scroller,
+            start: 'top bottom',
+            end: 'top top',
+            scrub: 0.4,
+          },
+        })
+        if (media) tl.to(media, { scale: 1, ease: 'none' }, 0)
+        tl.to(words, { opacity: 1, y: 0, ease: 'none', stagger: { amount: 0.7 } }, 0)
       })
-    }, section)
+    }, scroller)
 
     return () => ctx.revert()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items])
 
+  itemRefs.current = []
   mediaRefs.current = []
   wordRefs.current = items.map(() => [])
 
   return (
-    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden">
-      {items.map((item, i) => (
-        <div
-          key={i}
-          ref={(el) => {
-            mediaRefs.current[i] = el
-          }}
-          className="absolute inset-0"
-          style={{ zIndex: i }}
-        >
-          <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
-        </div>
-      ))}
-
-      {/* Faixa escurecida no centro da tela — é onde o texto fica agora,
-          então o contraste precisa vir dali, não só de baixo. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          zIndex: items.length,
-          background: `linear-gradient(to bottom, ${overlayColor}00 0%, ${overlayColor}B8 32%, ${overlayColor}CC 50%, ${overlayColor}B8 68%, ${overlayColor}00 100%)`,
-        }}
-      />
-
+    <section className="relative h-[100dvh] w-full overflow-hidden">
       <span
-        className="absolute left-6 top-6 text-sm uppercase tracking-[0.2em] sm:left-10 sm:top-10 sm:text-base"
-        style={{ zIndex: items.length + 1, ...eyebrowStyle }}
+        className="absolute left-6 top-6 z-10 text-sm uppercase tracking-[0.2em] sm:left-10 sm:top-10 sm:text-base"
+        style={eyebrowStyle}
       >
         {eyebrow}
       </span>
 
-      <div
-        className="absolute inset-x-6 top-1/2 -translate-y-1/2 sm:inset-x-10 md:inset-x-16"
-        style={{ zIndex: items.length + 1 }}
-      >
-        <div className="relative">
-          {items.map((item, i) => {
-            const captionWords = item.caption.split(' ')
-            const descriptionWords = item.description?.split(' ') ?? []
-            return (
-              <div key={i} className="absolute inset-0 flex flex-col justify-center">
+      <div ref={scrollerRef} className="h-full w-full snap-y snap-mandatory overflow-y-scroll">
+        {items.map((item, i) => {
+          const captionWords = item.caption.split(' ')
+          const descriptionWords = item.description?.split(' ') ?? []
+          return (
+            <div
+              key={i}
+              ref={(el) => {
+                itemRefs.current[i] = el
+              }}
+              className="relative h-[100dvh] w-full snap-start snap-always overflow-hidden"
+            >
+              <div ref={(el) => { mediaRefs.current[i] = el }} className="absolute inset-0">
+                <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
+              </div>
+
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: `linear-gradient(to bottom, ${overlayColor}00 0%, ${overlayColor}B8 32%, ${overlayColor}CC 50%, ${overlayColor}B8 68%, ${overlayColor}00 100%)`,
+                }}
+              />
+
+              <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 sm:inset-x-10 md:inset-x-16">
                 <h3 className={captionClass} style={captionStyle} aria-label={item.caption}>
                   {captionWords.map((word, wi) => (
                     <Word
@@ -167,19 +150,9 @@ export function PinnedPortfolio({
                   </p>
                 ) : null}
               </div>
-            )
-          })}
-          <h3 className={`invisible ${captionClass}`} style={captionStyle} aria-hidden>
-            {items[0]?.caption}
-          </h3>
-          <p
-            className={`invisible ${descriptionClass}`}
-            style={{ opacity: 0.88, ...descriptionStyle }}
-            aria-hidden
-          >
-            {items[0]?.description}
-          </p>
-        </div>
+            </div>
+          )
+        })}
       </div>
     </section>
   )

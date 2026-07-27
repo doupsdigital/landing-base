@@ -60,35 +60,15 @@ function CoverHero() {
         }}
       />
 
-      {/* Barra fixa — nome + contato, sempre visível */}
-      <div
-        className="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-4 px-5 py-4 sm:px-10"
-        style={{
-          backgroundColor: hexToRgba(bg, 0.55),
-          backdropFilter: 'blur(6px)',
-          borderBottom: `1px solid ${hexToRgba(ink, 0.12)}`,
-        }}
+      {/* Navegação temporária de testes — some quando as rotas de exemplo saírem */}
+      <Link
+        to="/"
+        aria-label="Voltar"
+        className="fixed left-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full text-lg no-underline transition-opacity hover:opacity-80 sm:left-6 sm:top-6"
+        style={{ backgroundColor: hexToRgba(bg, 0.55), color: ink, backdropFilter: 'blur(6px)' }}
       >
-        <div className="flex items-center gap-3 sm:gap-5">
-          <Link
-            to="/"
-            className="text-[11px] uppercase tracking-[0.14em] no-underline opacity-70 transition-opacity hover:opacity-100"
-            style={{ color: muted }}
-          >
-            ← Direções
-          </Link>
-          <span className="text-sm sm:text-base" style={display}>
-            {isabella.name}
-          </span>
-        </div>
-        <a
-          href="#contato"
-          className="rounded-full border px-5 py-2 text-[11px] uppercase tracking-[0.12em] no-underline transition-opacity hover:opacity-80"
-          style={{ borderColor: hexToRgba(ink, 0.5), color: ink, ...data }}
-        >
-          Contato
-        </a>
-      </div>
+        ←
+      </Link>
 
       <span
         ref={eyebrowRef}

@@ -19,7 +19,6 @@ export function NoirPage() {
     <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
       <VideoHero
         videoSrc={heroVideos.noir}
-        name={isabella.name}
         eyebrow="Modelo Comercial — São Paulo"
         title={'Isabella\nMarques'}
         titleClassName="text-[clamp(2.75rem,9vw,6.5rem)] leading-[0.98]"
