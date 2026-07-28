@@ -3,6 +3,8 @@ import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
 import { CampaignsSection } from '../components/CampaignsSection'
 import type { CampaignCategory } from '../components/CampaignsSection'
+import { ProcessSection } from '../components/ProcessSection'
+import type { ProcessStep } from '../components/ProcessSection'
 import { ContactSection } from '../components/ContactSection'
 import { isabella, images, portfolio, heroVideos, videos } from '../content/isabella'
 import type { VinhoVariation } from '../content/vinhoVariations'
@@ -47,6 +49,29 @@ const campaignCategories: CampaignCategory[] = [
   { label: 'Beleza & skincare', icon: 'sparkle', image: images.beauty09 },
   { label: 'Fitness & wellness', icon: 'dumbbell', image: images.fitness },
   { label: 'Joias & acessórios', icon: 'gem', image: images.skirt11 },
+]
+
+const processSteps: ProcessStep[] = [
+  {
+    number: '1',
+    title: 'Briefing',
+    description: 'Compartilhe os objetivos da campanha, o público e o estilo desejado.',
+  },
+  {
+    number: '2',
+    title: 'Alinhamento',
+    description: 'Definimos disponibilidade, formato do conteúdo, cronograma e detalhes da produção.',
+  },
+  {
+    number: '3',
+    title: 'Produção',
+    description: 'Realizamos a sessão de fotos ou vídeos seguindo o briefing aprovado.',
+  },
+  {
+    number: '4',
+    title: 'Entrega',
+    description: 'Você recebe todo o material pronto para usar em campanhas, redes sociais e ações de marketing.',
+  },
 ]
 
 export function VinhoPage({ variation }: VinhoPageProps) {
@@ -144,6 +169,17 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         scroller={`#${SCROLL_ROOT_ID}`}
         partnersLogos={partnerLogos}
         partnersTitle="Marcas Parceiras"
+      />
+
+      {/* Como funciona */}
+      <ProcessSection
+        image={images.dress10}
+        steps={processSteps}
+        eyebrow="Da ideia à campanha"
+        eyebrowStyle={{ ...body, color: accent }}
+        bodyStyle={body}
+        displayFont={display}
+        colors={{ ink, muted, accent, line, bg }}
       />
 
       {/* Contato final */}
