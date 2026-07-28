@@ -1,15 +1,33 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { ScrollFade } from '../components/ScrollFade'
 import { CTAButton } from '../components/CTAButton'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
-import { SectionDivider } from '../components/SectionDivider'
+import { CampaignsSection } from '../components/CampaignsSection'
+import type { CampaignCategory } from '../components/CampaignsSection'
+import { ProcessSection } from '../components/ProcessSection'
+import type { ProcessStep } from '../components/ProcessSection'
+import { ContactSection } from '../components/ContactSection'
 import { FullBleedMedia } from '../components/FullBleedMedia'
 import { gsap } from '../lib/gsap'
 import { hexToRgba } from '../lib/color'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
 import { vinhoVariations } from '../content/vinhoVariations'
+import logoGucci from '../assets/images/logos/01 - Gucci_logo.png'
+import logoVersace from '../assets/images/logos/02 - versace-primary-logo.png'
+import logoChanel from '../assets/images/logos/03 - Chanel_logo.png'
+import logoDolceGabbana from '../assets/images/logos/04 - Dolce-Gabbana-Logo.png'
+import logoLouisVuitton from '../assets/images/logos/05 Louis-Vuitton-logo.png'
+import logoZara from '../assets/images/logos/06 - ZARA-logo.png'
+
+const partnerLogos = [
+  { src: logoGucci, alt: 'Gucci' },
+  { src: logoVersace, alt: 'Versace' },
+  { src: logoChanel, alt: 'Chanel' },
+  { src: logoDolceGabbana, alt: 'Dolce & Gabbana' },
+  { src: logoLouisVuitton, alt: 'Louis Vuitton' },
+  { src: logoZara, alt: 'Zara' },
+]
 
 const bg = '#14150F'
 const ink = '#EFE9DD'
@@ -21,6 +39,11 @@ const display = { fontFamily: "'DM Serif Display', serif", fontStyle: 'italic' a
 const body = { fontFamily: "'Inter', sans-serif" }
 const data = { fontFamily: "'Archivo', sans-serif" }
 
+const SCROLL_ROOT_ID = 'cover-scroll-root'
+
+/** Fração da seção visível pra disparar o replay — mesmo valor usado no Hero/Portfólio das outras rotas. */
+const ACTIVE_THRESHOLD = 0.6
+
 // Copy: variação "Lifestyle & Conexão" (ver src/content/vinhoVariations.ts)
 // — tom pessoal/caloroso contrasta bem com o nome gigante e dramático do Cover.
 const copy = vinhoVariations.v5
@@ -30,39 +53,90 @@ const portfolioItems = portfolio.map((item, i) => ({
   description: copy.portfolio[i].description,
 }))
 
+const campaignCategories: CampaignCategory[] = [
+  { label: 'Moda feminina', icon: 'dress', image: images.fashion02 },
+  { label: 'Beleza & skincare', icon: 'sparkle', image: images.beauty09 },
+  { label: 'Fitness & wellness', icon: 'dumbbell', image: images.fitness },
+  { label: 'Joias & acessórios', icon: 'gem', image: images.skirt11 },
+]
+
+const processSteps: ProcessStep[] = [
+  {
+    number: '1',
+    title: 'Briefing',
+    description: 'Compartilhe os objetivos da campanha, o público e o estilo desejado.',
+  },
+  {
+    number: '2',
+    title: 'Alinhamento',
+    description: 'Definimos disponibilidade, formato do conteúdo, cronograma e detalhes da produção.',
+  },
+  {
+    number: '3',
+    title: 'Produção',
+    description: 'Realizamos a sessão de fotos ou vídeos seguindo o briefing aprovado.',
+  },
+  {
+    number: '4',
+    title: 'Entrega',
+    description: 'Você recebe todo o material pronto para usar em campanhas, redes sociais e ações de marketing.',
+  },
+]
+
+/**
+ * Hero de assinatura da Cover — nome gigante estilo capa de revista, layout
+ * próprio (não usa o VideoHero compartilhado). Reanima com o mesmo padrão
+ * de replay-no-scroll do VideoHero (timeline pausada + IntersectionObserver
+ * reiniciando ao voltar a ficar visível), pra ter o mesmo comportamento das
+ * outras rotas mantendo o visual exclusivo desta página.
+ */
 function CoverHero() {
+  const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
   const eyebrowRef = useRef<HTMLSpanElement>(null)
   const nameRef = useRef<HTMLHeadingElement>(null)
   const leadRef = useRef<HTMLParagraphElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
+  const taglineRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
+  const timelineRef = useRef<gsap.core.Timeline | null>(null)
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      gsap
-        .timeline({ defaults: { ease: 'power2.out' } })
+      const tl = gsap
+        .timeline({ paused: true, delay: 0.35, defaults: { ease: 'power2.out' } })
         .fromTo(videoRef.current, { scale: 1.1 }, { scale: 1, duration: 1.6 }, 0)
         .fromTo(overlayRef.current, { opacity: 0.3 }, { opacity: 1, duration: 1.2 }, 0)
         .fromTo(eyebrowRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, 0.1)
         .fromTo(nameRef.current, { opacity: 0, y: 34, scale: 1.04 }, { opacity: 1, y: 0, scale: 1, duration: 0.8 }, 0.2)
         .fromTo(leadRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 }, 0.42)
         .fromTo(statsRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 0.56)
-        .fromTo(ctaRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 }, 0.68)
+        .fromTo(taglineRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 }, 0.68)
+        .fromTo(ctaRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 }, 0.8)
+      timelineRef.current = tl
     })
     return () => ctx.revert()
   }, [])
 
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio >= ACTIVE_THRESHOLD) timelineRef.current?.restart()
+        })
+      },
+      { threshold: ACTIVE_THRESHOLD },
+    )
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section className="relative h-screen w-full overflow-hidden">
-      <FullBleedMedia
-        src={heroVideos.cover}
-        type="video"
-        alt=""
-        mediaRef={videoRef}
-        className="absolute inset-0"
-      />
+    <section ref={sectionRef} className="relative h-dvh w-full snap-start snap-always overflow-hidden">
+      <FullBleedMedia src={heroVideos.cover} type="video" alt="" mediaRef={videoRef} className="absolute inset-0" />
       <div
         ref={overlayRef}
         className="absolute inset-0"
@@ -120,13 +194,17 @@ function CoverHero() {
           )}
         </div>
 
-        <div ref={ctaRef} className="mt-7 inline-block">
+        <p ref={taglineRef} className="mt-6 text-lg sm:text-xl" style={{ ...display, color: accent }}>
+          Collabs e Campanhas
+        </p>
+
+        <div ref={ctaRef} className="mt-3 inline-block">
           <CTAButton
             href={isabella.contactHref}
             className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
             style={{ backgroundColor: ink, color: bg, ...data }}
           >
-            {copy.ctaPrimary}
+            Contato Comercial
           </CTAButton>
         </div>
       </div>
@@ -136,11 +214,14 @@ function CoverHero() {
 
 export function CoverPage() {
   return (
-    <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
+    <div
+      id={SCROLL_ROOT_ID}
+      style={{ backgroundColor: bg, color: ink, ...body }}
+      className="h-dvh w-full snap-y snap-mandatory overflow-y-auto"
+    >
       <CoverHero />
 
       {/* Sobre */}
-      <SectionDivider label="Sobre" labelStyle={{ ...data, color: accent }} bg={bg} />
       <AboutSection
         image={images.rosto}
         bioLong={copy.sobre}
@@ -148,7 +229,12 @@ export function CoverPage() {
         overlayColor={bg}
         bodyStyle={{ ...body, color: ink }}
         mutedStyle={{ ...data, color: muted }}
-        valueColor={ink}
+        valueColor={accent}
+        lineColor={line}
+        scroller={`#${SCROLL_ROOT_ID}`}
+        eyebrow="Sobre"
+        eyebrowStyle={{ ...data, color: accent }}
+        imageBrightness={0.4}
       />
 
       {/* Portfólio — pinado */}
@@ -159,49 +245,55 @@ export function CoverPage() {
         captionStyle={{ ...display }}
         descriptionStyle={{ ...body, color: ink }}
         overlayColor={bg}
+        mediaBrightness={0.4}
       />
 
       {/* Campanhas ideais */}
-      <SectionDivider label="Campanhas ideais" labelStyle={{ ...data, color: accent }} bg={bg} />
-      <section className="px-6 py-16 sm:px-10 md:px-16">
-        <ScrollFade>
-          <div className="flex flex-wrap gap-3">
-            {isabella.categories.map((c) => (
-              <span
-                key={c}
-                className="rounded-sm border px-4 py-2 text-sm"
-                style={{ borderColor: line, color: ink, ...data }}
-              >
-                {c}
-              </span>
-            ))}
-          </div>
-        </ScrollFade>
-      </section>
+      <CampaignsSection
+        categories={campaignCategories}
+        intro="Um perfil versátil o suficiente pra transitar entre esses universos sem perder consistência."
+        eyebrow="Campanhas"
+        eyebrowStyle={{ ...data, color: accent }}
+        bodyStyle={body}
+        colors={{ ink, muted, accent, line, bg }}
+        scroller={`#${SCROLL_ROOT_ID}`}
+        partnersLogos={partnerLogos}
+        partnersTitle="Marcas Parceiras"
+      />
+
+      {/* Como funciona */}
+      <ProcessSection
+        image={images.dress10}
+        steps={processSteps}
+        eyebrow="Da ideia à campanha"
+        eyebrowStyle={{ ...data, color: accent }}
+        bodyStyle={body}
+        displayFont={display}
+        colors={{ ink, muted, accent, line, bg }}
+      />
 
       {/* Contato final */}
-      <SectionDivider label="Contato" labelStyle={{ ...data, color: accent }} bg={bg} />
-      <section id="contato" className="px-6 py-24 text-center sm:px-10">
-        <ScrollFade>
-          <h2 style={display} className="text-[clamp(2.5rem,7vw,5.5rem)]">
-            Vamos criar juntos.
-          </h2>
-          <div className="mt-8 inline-block">
-            <CTAButton
-              href={isabella.contactHref}
-              className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
-              style={{ backgroundColor: ink, color: bg, ...data }}
-            >
-              {copy.ctaPrimary}
-            </CTAButton>
-          </div>
-        </ScrollFade>
-      </section>
+      <ContactSection
+        image={images.corpo}
+        title="A presença que sua marca precisa."
+        ctaPrimaryLabel="Solicitar Disponibilidade"
+        ctaHref={isabella.contactHref}
+        ctaTagline="Parcerias"
+        mediaKitDescription="Reúne formatos de conteúdo, métricas e disponibilidade para propostas de parceria."
+        mediaKitCtaLabel="Solicitar Mídia Kit"
+        instagramHandle={isabella.instagramHandle}
+        instagramHref={isabella.instagramHref}
+        emailLabel={isabella.contactLabel}
+        emailHref={isabella.contactHref}
+        locationLine={`${isabella.location.split(',')[0]} · Atuação nacional`}
+        eyebrow="Contato"
+        eyebrowStyle={{ ...data, color: accent }}
+        displayFont={display}
+        bodyStyle={body}
+        colors={{ ink, muted, accent, line, bg, ctaBg: ink, ctaText: bg }}
+      />
 
-      <footer
-        className="border-t px-6 py-8 text-[11px] sm:px-10"
-        style={{ borderColor: line, color: muted, ...data }}
-      >
+      <footer className="border-t px-6 py-8 text-[11px] sm:px-10" style={{ borderColor: line, color: muted, ...data }}>
         {isabella.name} · {isabella.location} · {isabella.contactLabel}
       </footer>
     </div>
