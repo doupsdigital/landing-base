@@ -1,10 +1,28 @@
-import { ScrollFade } from '../components/ScrollFade'
-import { CTAButton } from '../components/CTAButton'
 import { VideoHero } from '../components/VideoHero'
+import { AboutSection } from '../components/AboutSection'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
-import { SectionDivider } from '../components/SectionDivider'
+import { CampaignsSection } from '../components/CampaignsSection'
+import type { CampaignCategory } from '../components/CampaignsSection'
+import { ProcessSection } from '../components/ProcessSection'
+import type { ProcessStep } from '../components/ProcessSection'
+import { ContactSection } from '../components/ContactSection'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
 import { vinhoVariations } from '../content/vinhoVariations'
+import logoGucci from '../assets/images/logos/01 - Gucci_logo.png'
+import logoVersace from '../assets/images/logos/02 - versace-primary-logo.png'
+import logoChanel from '../assets/images/logos/03 - Chanel_logo.png'
+import logoDolceGabbana from '../assets/images/logos/04 - Dolce-Gabbana-Logo.png'
+import logoLouisVuitton from '../assets/images/logos/05 Louis-Vuitton-logo.png'
+import logoZara from '../assets/images/logos/06 - ZARA-logo.png'
+
+const partnerLogos = [
+  { src: logoGucci, alt: 'Gucci' },
+  { src: logoVersace, alt: 'Versace' },
+  { src: logoChanel, alt: 'Chanel' },
+  { src: logoDolceGabbana, alt: 'Dolce & Gabbana' },
+  { src: logoLouisVuitton, alt: 'Louis Vuitton' },
+  { src: logoZara, alt: 'Zara' },
+]
 
 const bg = '#FFFFFF'
 const ink = '#15140F'
@@ -12,13 +30,19 @@ const muted = '#6B6A63'
 const accent = '#616D5A'
 const surface = '#F1EFE9'
 const line = '#DEDACF'
+// Reservado pro rótulo fixo do Portfólio: é a única seção realmente escura
+// (foto/vídeo full-bleed) — o `accent` (verde-oliva escuro) não teria
+// contraste suficiente ali, então usa-se um tom claro só nesse caso.
+const darkSectionLabel = '#DCE0D6'
 
 const display = { fontFamily: "'Space Grotesk', sans-serif", color: ink }
 const body = { fontFamily: "'Inter', sans-serif" }
 const mono = { fontFamily: "'IBM Plex Mono', monospace" }
 
+const SCROLL_ROOT_ID = 'studio-scroll-root'
+
 // Copy: variação "Resultados & Mídia Kit" (ver src/content/vinhoVariations.ts)
-// — tom orientado a dados/métricas combina com o Comp Card (dt/dd) do Studio.
+// — tom orientado a dados/métricas combina com a identidade mono da Studio.
 const copy = vinhoVariations.v1
 const portfolioItems = portfolio.map((item, i) => ({
   ...item,
@@ -26,9 +50,43 @@ const portfolioItems = portfolio.map((item, i) => ({
   description: copy.portfolio[i].description,
 }))
 
+const campaignCategories: CampaignCategory[] = [
+  { label: 'Moda feminina', icon: 'dress', image: images.fashion02 },
+  { label: 'Beleza & skincare', icon: 'sparkle', image: images.beauty09 },
+  { label: 'Fitness & wellness', icon: 'dumbbell', image: images.fitness },
+  { label: 'Joias & acessórios', icon: 'gem', image: images.skirt11 },
+]
+
+const processSteps: ProcessStep[] = [
+  {
+    number: '1',
+    title: 'Briefing',
+    description: 'Compartilhe os objetivos da campanha, o público e o estilo desejado.',
+  },
+  {
+    number: '2',
+    title: 'Alinhamento',
+    description: 'Definimos disponibilidade, formato do conteúdo, cronograma e detalhes da produção.',
+  },
+  {
+    number: '3',
+    title: 'Produção',
+    description: 'Realizamos a sessão de fotos ou vídeos seguindo o briefing aprovado.',
+  },
+  {
+    number: '4',
+    title: 'Entrega',
+    description: 'Você recebe todo o material pronto para usar em campanhas, redes sociais e ações de marketing.',
+  },
+]
+
 export function StudioPage() {
   return (
-    <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
+    <div
+      id={SCROLL_ROOT_ID}
+      style={{ backgroundColor: bg, color: ink, ...body }}
+      className="h-dvh w-full snap-y snap-mandatory overflow-y-auto"
+    >
       <VideoHero
         videoSrc={heroVideos.studio}
         eyebrow="Modelo Comercial — São Paulo"
@@ -38,124 +96,89 @@ export function StudioPage() {
         location={isabella.location.split(',')[0]}
         locationLabel={isabella.locationLabel}
         stats={isabella.socialStats}
-        ctaLabel={copy.ctaPrimary}
+        ctaLabel="Contato Comercial"
         ctaHref={isabella.contactHref}
-        ctaSecondaryLabel={copy.ctaSecondary}
-        ctaSecondaryHref={isabella.contactHref}
-        colors={{
-          overlayTint: ink,
-          text: bg,
-          mutedText: surface,
-          accent,
-          ctaBg: bg,
-          ctaText: ink,
-        }}
+        ctaTagline="Collabs e Campanhas"
+        colors={{ overlayTint: ink, text: bg, mutedText: surface, accent, ctaBg: bg, ctaText: ink }}
         displayFont={display}
         bodyFont={body}
         labelFont={mono}
+        replayOnScroll
       />
 
       {/* Sobre */}
-      <section className="border-t px-6 py-16 sm:px-10 md:px-16" style={{ borderColor: line }}>
-        <ScrollFade>
-          <span className="mb-4 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
-            Sobre
-          </span>
-          <p className="max-w-[60ch] text-lg leading-relaxed opacity-90">{copy.sobre}</p>
-        </ScrollFade>
-      </section>
-
-      {/* Comp Card — elemento de assinatura */}
-      <section className="border-t px-6 py-16 sm:px-10 md:px-16" style={{ borderColor: line }}>
-        <ScrollFade>
-          <span className="mb-6 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
-            Comp Card
-          </span>
-          <div className="overflow-hidden rounded-none border" style={{ borderColor: line }}>
-            <div className="grid grid-cols-1 md:grid-cols-[220px_1fr]">
-              <div className="aspect-[3/4] w-full overflow-hidden md:aspect-auto md:h-full">
-                <img
-                  src={images.rosto}
-                  alt="Isabella Marques, comp card"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="p-6 sm:p-8">
-                <div className="mb-6 flex items-baseline justify-between border-b pb-4" style={{ borderColor: line }}>
-                  <h2 style={display} className="text-2xl">
-                    {isabella.name}
-                  </h2>
-                  <span className="text-xs" style={{ ...mono, color: muted }}>
-                    SP · BR
-                  </span>
-                </div>
-                <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
-                  {isabella.stats.map((s) => (
-                    <div key={s.label}>
-                      <dt className="text-[11px] uppercase tracking-[0.1em]" style={{ ...mono, color: muted }}>
-                        {s.label}
-                      </dt>
-                      <dd className="mt-1 text-sm" style={mono}>
-                        {s.value}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-                <div className="mt-6 border-t pt-4" style={{ borderColor: line }}>
-                  <dt className="mb-2 text-[11px] uppercase tracking-[0.1em]" style={{ ...mono, color: muted }}>
-                    Categorias
-                  </dt>
-                  <div className="flex flex-wrap gap-2">
-                    {isabella.categories.map((c) => (
-                      <span
-                        key={c}
-                        className="rounded-sm px-2.5 py-1 text-[11px]"
-                        style={{ backgroundColor: surface, color: ink, ...mono }}
-                      >
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ScrollFade>
-      </section>
+      <AboutSection
+        image={images.rosto}
+        bioLong={copy.sobre}
+        stats={isabella.stats}
+        overlayColor={ink}
+        bodyStyle={{ ...body, color: bg }}
+        mutedStyle={{ ...mono, color: surface }}
+        valueColor={darkSectionLabel}
+        lineColor={line}
+        scroller={`#${SCROLL_ROOT_ID}`}
+        eyebrow="Sobre"
+        eyebrowStyle={{ ...mono, color: darkSectionLabel }}
+        imageBrightness={0.4}
+      />
 
       {/* Portfólio — pinado */}
       <PinnedPortfolio
         items={portfolioItems}
         eyebrow="Especialidades"
-        eyebrowStyle={{ ...mono, color: '#DCE0D6' }}
+        eyebrowStyle={{ ...mono, color: darkSectionLabel }}
         captionStyle={{ ...display, color: '#FFFFFF' }}
         descriptionStyle={{ ...body, color: surface }}
         overlayColor={ink}
+        mediaBrightness={0.4}
+      />
+
+      {/* Campanhas ideais */}
+      <CampaignsSection
+        categories={campaignCategories}
+        intro="Um perfil versátil o suficiente pra transitar entre esses universos sem perder consistência."
+        eyebrow="Campanhas"
+        eyebrowStyle={{ ...mono, color: accent }}
+        bodyStyle={body}
+        colors={{ ink, muted, accent, line, bg }}
+        scroller={`#${SCROLL_ROOT_ID}`}
+        partnersLogos={partnerLogos}
+        partnersTitle="Marcas Parceiras"
+      />
+
+      {/* Como funciona */}
+      <ProcessSection
+        image={images.dress10}
+        steps={processSteps}
+        eyebrow="Da ideia à campanha"
+        eyebrowStyle={{ ...mono, color: accent }}
+        bodyStyle={body}
+        displayFont={display}
+        colors={{ ink, muted, accent, line, bg }}
       />
 
       {/* Contato final */}
-      <SectionDivider label="Contato" labelStyle={{ ...mono, color: '#DCE0D6' }} bg={ink} />
-      <section id="contato" className="px-6 py-20 text-center sm:px-10">
-        <ScrollFade>
-          <h2 style={display} className="text-[clamp(2rem,5vw,3.25rem)]">
-            Vamos criar juntos.
-          </h2>
-          <div className="mt-8 inline-block">
-            <CTAButton
-              href={isabella.contactHref}
-              className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
-              style={{ backgroundColor: ink, color: bg, ...mono }}
-            >
-              {copy.ctaPrimary}
-            </CTAButton>
-          </div>
-        </ScrollFade>
-      </section>
+      <ContactSection
+        image={images.corpo}
+        title="A presença que sua marca precisa."
+        ctaPrimaryLabel="Solicitar Disponibilidade"
+        ctaHref={isabella.contactHref}
+        ctaTagline="Parcerias"
+        mediaKitDescription="Reúne formatos de conteúdo, métricas e disponibilidade para propostas de parceria."
+        mediaKitCtaLabel="Solicitar Mídia Kit"
+        instagramHandle={isabella.instagramHandle}
+        instagramHref={isabella.instagramHref}
+        emailLabel={isabella.contactLabel}
+        emailHref={isabella.contactHref}
+        locationLine={`${isabella.location.split(',')[0]} · Atuação nacional`}
+        eyebrow="Contato"
+        eyebrowStyle={{ ...mono, color: accent }}
+        displayFont={display}
+        bodyStyle={body}
+        colors={{ ink, muted, accent, line, bg, ctaBg: ink, ctaText: bg }}
+      />
 
-      <footer
-        className="border-t px-6 py-8 text-[11px] sm:px-10"
-        style={{ borderColor: line, color: muted, ...mono }}
-      >
+      <footer className="border-t px-6 py-8 text-[11px] sm:px-10" style={{ borderColor: line, color: muted, ...mono }}>
         {isabella.name} · {isabella.location} · {isabella.contactLabel}
       </footer>
     </div>
