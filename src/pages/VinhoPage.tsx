@@ -83,7 +83,7 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         videoSrc={heroVideoSrc}
         eyebrow="Modelo Comercial — São Paulo"
         title={title}
-        titleClassName="text-[clamp(2.75rem,9vw,6.5rem)] leading-[0.98]"
+        titleClassName="text-[clamp(2.75rem,9vw,4.75rem)] leading-[0.98]"
         lead={lead}
         location={isabella.location.split(',')[0]}
         locationLabel={isabella.locationLabel}
