@@ -21,6 +21,8 @@ type ContactSectionProps = {
   ctaHref: string
   ctaSecondaryLabel?: string
   ctaSecondaryHref?: string
+  /** Legenda opcional em cima do CTA principal, na mesma fonte de destaque (displayFont) do título. */
+  ctaTagline?: string
   instagramHandle: string
   instagramHref: string
   emailLabel: string
@@ -64,6 +66,7 @@ export function ContactSection({
   ctaHref,
   ctaSecondaryLabel,
   ctaSecondaryHref,
+  ctaTagline,
   instagramHandle,
   instagramHref,
   emailLabel,
@@ -148,7 +151,20 @@ export function ContactSection({
               {title}
             </h2>
 
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:mt-7 md:mt-9 md:justify-start">
+            {ctaTagline ? (
+              <p
+                className="mt-5 text-lg sm:mt-7 sm:text-xl"
+                style={{ ...displayFont, color: colors.accent }}
+              >
+                {ctaTagline}
+              </p>
+            ) : null}
+
+            <div
+              className={`flex flex-wrap items-center justify-center gap-x-8 gap-y-3 md:justify-start ${
+                ctaTagline ? 'mt-3' : 'mt-5 sm:mt-7 md:mt-9'
+              }`}
+            >
               <MagneticGlowButton
                 href={ctaHref}
                 glowColor={colors.accent}

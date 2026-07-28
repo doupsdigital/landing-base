@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { gsap } from '../lib/gsap'
 import { hexToRgba } from '../lib/color'
 import { CTAButton } from './CTAButton'
+import { MagneticGlowButton } from './MagneticGlowButton'
 import { FullBleedMedia } from './FullBleedMedia'
 
 /** Fração da seção visível pra disparar o replay — mesmo valor usado no Portfólio. */
@@ -37,6 +38,8 @@ type VideoHeroProps = {
   /** CTA secundário, opcional — link discreto ao lado do botão principal. */
   ctaSecondaryLabel?: string
   ctaSecondaryHref?: string
+  /** Legenda opcional em cima do CTA principal, na mesma fonte de destaque (displayFont) dos valores de stat. */
+  ctaTagline?: string
   colors: VideoHeroColors
   displayFont: CSSProperties
   bodyFont: CSSProperties
@@ -61,6 +64,7 @@ export function VideoHero({
   ctaHref,
   ctaSecondaryLabel,
   ctaSecondaryHref,
+  ctaTagline,
   colors,
   displayFont,
   bodyFont,
@@ -77,6 +81,7 @@ export function VideoHero({
   const titleRef = useRef<HTMLHeadingElement>(null)
   const leadRef = useRef<HTMLParagraphElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
+  const taglineRef = useRef<HTMLParagraphElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
   const timelineRef = useRef<gsap.core.Timeline | null>(null)
 
@@ -90,7 +95,10 @@ export function VideoHero({
         .fromTo(titleRef.current, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.7 }, 0.35)
         .fromTo(leadRef.current, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6 }, 0.7)
         .fromTo(statsRef.current, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6 }, 1.05)
-        .fromTo(ctaRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 1.4)
+      if (taglineRef.current) {
+        tl.fromTo(taglineRef.current, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 }, 1.3)
+      }
+      tl.fromTo(ctaRef.current, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 1.5)
       timelineRef.current = tl
       if (!replayOnScroll) tl.play()
     })
@@ -163,13 +171,13 @@ export function VideoHero({
 
         <p
           ref={leadRef}
-          className="mt-5 max-w-[46ch] text-base leading-relaxed sm:text-lg"
+          className="mt-4 max-w-[46ch] text-base leading-relaxed sm:mt-5 sm:text-lg"
           style={{ ...bodyFont, color: colors.text, opacity: 0.85 }}
         >
           {lead}
         </p>
 
-        <div ref={statsRef} className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
+        <div ref={statsRef} className="mt-6 flex flex-wrap gap-x-10 gap-y-4 sm:mt-8">
           {[...stats, { value: location, label: locationLabel }].map((s) => (
             <div key={s.label}>
               <p className="text-2xl sm:text-3xl" style={{ ...displayFont, color: colors.text }}>
@@ -185,14 +193,25 @@ export function VideoHero({
           ))}
         </div>
 
-        <div ref={ctaRef} className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <CTAButton
+        {ctaTagline ? (
+          <p
+            ref={taglineRef}
+            className="mt-6 text-lg sm:mt-8 sm:text-xl"
+            style={{ ...displayFont, color: colors.accent }}
+          >
+            {ctaTagline}
+          </p>
+        ) : null}
+
+        <div ref={ctaRef} className={`flex flex-wrap items-center gap-x-8 gap-y-4 ${ctaTagline ? 'mt-3' : 'mt-9'}`}>
+          <MagneticGlowButton
             href={ctaHref}
+            glowColor={colors.accent}
             className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
             style={{ backgroundColor: colors.ctaBg, color: colors.ctaText, ...dataFont }}
           >
             {ctaLabel}
-          </CTAButton>
+          </MagneticGlowButton>
           {ctaSecondaryLabel ? (
             <CTAButton
               href={ctaSecondaryHref ?? ctaHref}

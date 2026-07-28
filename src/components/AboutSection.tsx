@@ -17,6 +17,8 @@ type AboutSectionProps = {
   bodyStyle: CSSProperties
   mutedStyle: CSSProperties
   valueColor: string
+  /** Cor do divisor fino acima das características — se omitida, não desenha o divisor. */
+  lineColor?: string
   imageOpacity?: number
   /** Escurece a imagem de verdade (`filter: brightness`), em vez de misturar com o fundo como `imageOpacity`. Padrão: 1 (sem alteração). */
   imageBrightness?: number
@@ -40,6 +42,7 @@ export function AboutSection({
   bodyStyle,
   mutedStyle,
   valueColor,
+  lineColor,
   imageOpacity = 0.8,
   imageBrightness = 1,
   scroller,
@@ -94,15 +97,18 @@ export function AboutSection({
 
   const textContent = (
     <>
-      <p className="text-xl leading-relaxed sm:text-2xl" style={{ opacity: 0.92, ...bodyStyle }}>
+      <p className="text-xl leading-relaxed sm:text-2xl" style={{ ...bodyStyle, opacity: 1 }}>
         {bioLong}
       </p>
       {stats && stats.length > 0 ? (
-        <div className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-3 text-base sm:mt-10 sm:text-lg">
+        <div
+          className="mx-auto mt-8 flex max-w-xl flex-wrap justify-center gap-x-8 gap-y-3 text-sm sm:mt-12 sm:text-base"
+          style={lineColor ? { borderTop: `1px solid ${lineColor}`, paddingTop: '1.75rem' } : undefined}
+        >
           {stats.map((s) => (
-            <span key={s.label} style={mutedStyle}>
+            <span key={s.label} style={{ ...mutedStyle, opacity: 0.75 }}>
               {s.label} ·{' '}
-              <span className="font-medium" style={{ color: valueColor }}>
+              <span className="font-semibold tracking-wide" style={{ color: valueColor }}>
                 {s.value}
               </span>
             </span>

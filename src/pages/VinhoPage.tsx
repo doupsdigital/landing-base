@@ -53,7 +53,8 @@ export function VinhoPage({ variation }: VinhoPageProps) {
   const title = variation?.headline ?? 'Isabella Marques'
   const lead = variation?.subheadline ?? 'Moda, beleza e lifestyle com autenticidade.'
   const bioLong = variation?.sobre ?? isabella.bioLong
-  const ctaPrimary = variation?.ctaPrimary ?? 'Falar no WhatsApp'
+  const ctaPrimary = variation?.ctaPrimary ?? 'Contato Comercial'
+  const ctaContact = variation?.ctaPrimary ?? 'Solicitar Disponibilidade'
   const ctaSecondary = variation?.ctaSecondary
 
   const portfolioItems = variation
@@ -91,6 +92,7 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         ctaHref={isabella.contactHref}
         ctaSecondaryLabel={ctaSecondary}
         ctaSecondaryHref={isabella.contactHref}
+        ctaTagline="Collabs e Campanhas"
         colors={{
           overlayTint: bg,
           text: ink,
@@ -112,7 +114,8 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         overlayColor={bg}
         bodyStyle={{ ...body, color: ink }}
         mutedStyle={{ color: muted }}
-        valueColor={ink}
+        valueColor={accent}
+        lineColor={line}
         scroller={`#${SCROLL_ROOT_ID}`}
         eyebrow="Sobre"
         eyebrowStyle={{ ...body, color: accent }}
@@ -147,10 +150,11 @@ export function VinhoPage({ variation }: VinhoPageProps) {
       <ContactSection
         image={images.corpo}
         title="A presença que sua marca precisa."
-        ctaPrimaryLabel={ctaPrimary}
+        ctaPrimaryLabel={ctaContact}
         ctaHref={isabella.contactHref}
         ctaSecondaryLabel={ctaSecondary}
         ctaSecondaryHref={isabella.contactHref}
+        ctaTagline="Parcerias"
         instagramHandle={isabella.instagramHandle}
         instagramHref={isabella.instagramHref}
         emailLabel={isabella.contactLabel}
