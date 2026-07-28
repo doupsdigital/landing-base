@@ -96,13 +96,15 @@ export function CampaignsSection({
       </div>
 
       <div
-        className={`-mt-6 flex min-h-screen w-full flex-col items-center px-6 sm:-mt-8 sm:px-10 md:px-16 ${
-          partnersLogos && partnersLogos.length > 0 ? 'justify-start pb-16 pt-16 sm:pt-20' : 'justify-center py-10'
+        className={`-mt-6 flex min-h-dvh w-full flex-col items-center px-6 sm:-mt-8 sm:px-10 md:px-16 ${
+          partnersLogos && partnersLogos.length > 0
+            ? 'justify-start pb-8 pt-10 sm:pb-12 sm:pt-16 md:pt-20'
+            : 'justify-center py-10'
         }`}
       >
         <div className="flex w-full flex-col items-center">
           <p
-            className="mx-auto mb-8 max-w-xl text-center text-base leading-relaxed sm:text-lg"
+            className="mx-auto mb-6 max-w-xl text-center text-base leading-relaxed sm:mb-8 sm:text-lg"
             style={{ ...bodyStyle, color: colors.muted }}
           >
             {intro}
@@ -146,9 +148,9 @@ export function CampaignsSection({
         </div>
 
         {partnersLogos && partnersLogos.length > 0 ? (
-          <div className="mt-14 w-full max-w-3xl sm:mt-16">
+          <div className="mt-8 w-full max-w-3xl sm:mt-14 md:mt-16">
             <p
-              className="mb-6 text-center text-xs uppercase tracking-[0.3em] sm:text-sm"
+              className="mb-4 text-center text-xs uppercase tracking-[0.3em] sm:mb-6 sm:text-sm"
               style={{ ...bodyStyle, color: colors.accent }}
             >
               {partnersTitle}

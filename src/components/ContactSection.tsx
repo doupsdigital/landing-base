@@ -120,10 +120,10 @@ export function ContactSection({
         </span>
       </div>
 
-      <div className="-mt-6 flex min-h-screen w-full items-center px-6 py-16 sm:-mt-8 sm:px-10 md:px-16">
-        <div className="mx-auto grid w-full max-w-5xl items-center gap-10 md:grid-cols-5 md:gap-16">
+      <div className="-mt-6 flex min-h-dvh w-full items-center px-6 py-8 sm:-mt-8 sm:px-10 sm:py-12 md:px-16 md:py-16">
+        <div className="mx-auto grid w-full max-w-5xl items-center gap-6 sm:gap-8 md:grid-cols-5 md:gap-16">
           <div
-            className="relative mx-auto aspect-[3/5] w-full max-w-xs overflow-hidden rounded-sm transition-[opacity,transform] duration-1000 ease-out md:col-span-2 md:mx-0 md:max-w-none"
+            className="relative mx-auto aspect-[3/5] max-h-[36dvh] w-full max-w-[240px] overflow-hidden rounded-sm transition-[opacity,transform] duration-1000 ease-out sm:max-h-[46dvh] sm:max-w-xs md:col-span-2 md:mx-0 md:max-h-none md:max-w-none"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: `translateY(${isVisible ? 0 : 40}px)`,
@@ -145,11 +145,11 @@ export function ContactSection({
               transitionDelay: isVisible ? '350ms' : '0ms',
             }}
           >
-            <h2 style={displayFont} className="text-[clamp(2rem,5vw,3.75rem)]">
+            <h2 style={displayFont} className="text-[clamp(1.75rem,5vw,3.75rem)]">
               {title}
             </h2>
 
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 md:justify-start">
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:mt-7 md:mt-9 md:justify-start">
               <MagneticGlowButton
                 href={ctaHref}
                 glowColor={colors.accent}
@@ -169,7 +169,7 @@ export function ContactSection({
               ) : null}
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 md:justify-start">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 sm:mt-8 md:mt-10 md:justify-start">
               <a
                 href={instagramHref}
                 target="_blank"
@@ -190,12 +190,12 @@ export function ContactSection({
               </a>
             </div>
 
-            <p className="mt-4 text-xs" style={{ ...bodyStyle, color: colors.muted, opacity: 0.6 }}>
+            <p className="mt-3 text-xs sm:mt-4" style={{ ...bodyStyle, color: colors.muted, opacity: 0.6 }}>
               {responseTime}
             </p>
 
             <div
-              className="mt-9 border-t pt-6 text-[11px] uppercase tracking-[0.16em]"
+              className="mt-6 border-t pt-4 text-[11px] uppercase tracking-[0.16em] sm:mt-8 sm:pt-6 md:mt-9"
               style={{ ...bodyStyle, borderColor: colors.line, color: colors.muted }}
             >
               {locationLine}

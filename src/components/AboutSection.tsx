@@ -98,7 +98,7 @@ export function AboutSection({
         {bioLong}
       </p>
       {stats && stats.length > 0 ? (
-        <div className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-base sm:text-lg">
+        <div className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-3 text-base sm:mt-10 sm:text-lg">
           {stats.map((s) => (
             <span key={s.label} style={mutedStyle}>
               {s.label} ·{' '}
@@ -144,7 +144,7 @@ export function AboutSection({
 
       {/* min-h-screen (não h-full) — cresce além de uma tela se o texto
           precisar de mais espaço, em vez de cortar. */}
-      <div className="relative flex min-h-screen w-full flex-col items-center justify-end px-6 pb-16 sm:px-10 sm:pb-24">
+      <div className="relative flex min-h-dvh w-full flex-col items-center justify-end px-6 pb-10 sm:px-10 sm:pb-24">
         {scroller ? (
           <div
             className="mx-auto max-w-3xl text-center transition-[opacity,transform] duration-1000 ease-out"

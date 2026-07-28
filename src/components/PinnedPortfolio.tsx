@@ -76,7 +76,7 @@ export function PinnedPortfolio({
           ref={(el) => {
             itemRefs.current[i] = el
           }}
-          className="relative h-screen w-full snap-start snap-always overflow-hidden transition-opacity duration-700 ease-out"
+          className="relative h-dvh w-full snap-start snap-always overflow-hidden transition-opacity duration-700 ease-out"
           style={{ opacity: i === activeIndex ? 1 : 0 }}
         >
           <div className="absolute inset-0" style={{ filter: `brightness(${mediaBrightness})` }}>

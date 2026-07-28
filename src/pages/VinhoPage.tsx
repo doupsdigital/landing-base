@@ -76,7 +76,7 @@ export function VinhoPage({ variation }: VinhoPageProps) {
     <div
       id={SCROLL_ROOT_ID}
       style={{ backgroundColor: bg, color: ink, ...body }}
-      className="h-screen w-full snap-y snap-mandatory overflow-y-auto"
+      className="h-dvh w-full snap-y snap-mandatory overflow-y-auto"
     >
       <VideoHero
         videoSrc={heroVideoSrc}

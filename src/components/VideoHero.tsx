@@ -118,7 +118,7 @@ export function VideoHero({
   }, [replayOnScroll])
 
   return (
-    <section ref={sectionRef} className="relative h-screen w-full snap-start snap-always overflow-hidden">
+    <section ref={sectionRef} className="relative h-dvh w-full snap-start snap-always overflow-hidden">
       <FullBleedMedia
         src={videoSrc}
         type="video"
@@ -145,7 +145,7 @@ export function VideoHero({
         ←
       </Link>
 
-      <div className="absolute inset-x-0 bottom-0 px-6 pb-[clamp(2.5rem,8vh,5rem)] sm:px-10 md:px-16">
+      <div className="absolute inset-x-0 bottom-0 px-6 pb-[clamp(2rem,8dvh,5rem)] sm:px-10 md:px-16">
         <div ref={eyebrowRef} className="mb-4 flex items-center gap-3">
           <span className="inline-block h-px w-5" style={{ backgroundColor: colors.accent }} />
           <span className="text-sm uppercase tracking-[0.2em] sm:text-base" style={{ ...dataFont, color: colors.accent }}>
