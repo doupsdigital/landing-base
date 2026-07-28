@@ -11,6 +11,8 @@ type StatItem = { label: string; value: string }
 
 type AboutSectionProps = {
   image: string
+  /** Foto alternativa exibida só no desktop (md+) — ver FullBleedMedia `desktopSrc`. No mobile continua `image`. */
+  desktopImage?: string
   bioLong: string
   stats?: StatItem[]
   overlayColor: string
@@ -36,6 +38,7 @@ type AboutSectionProps = {
  */
 export function AboutSection({
   image,
+  desktopImage,
   bioLong,
   stats,
   overlayColor,
@@ -136,7 +139,7 @@ export function AboutSection({
         className="absolute inset-[-6%]"
         style={{ opacity: imageOpacity, filter: `brightness(${imageBrightness})` }}
       >
-        <FullBleedMedia src={image} type="image" alt="" />
+        <FullBleedMedia src={image} desktopSrc={desktopImage} type="image" alt="" />
       </div>
 
       {/* Contraste embaixo (pro texto) + um fio bem curto (~3%) no topo só

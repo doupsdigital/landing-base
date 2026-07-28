@@ -49,7 +49,9 @@ src/
                    # projeto final de um cliente é normalmente uma só
   content/        # dados do cliente atual (bio, stats, portfólio, links)
                    # num único arquivo tipado — renomear por cliente
-  assets/         # imagens, vídeos, ícones já processados
+  assets/         # imagens, vídeos, ícones já processados — organizados em
+                   # portrait/ e landscape/ dentro de images/ e videos/ (ver
+                   # "Regras de design")
   lib/            # helpers (setup do gsap, conversão de cor, etc.)
 Context/          # (não versionado) prints, bio, fotos/vídeos originais e
                    # brief do cliente atual — ver .gitignore
@@ -88,10 +90,13 @@ componente novo quando a seção realmente não tiver equivalente.
 - `ContactSection.tsx` — fechamento com foto de fundo, CTA principal,
   bloco opcional de material de apoio (mídia kit, tabela de valores,
   portfólio em PDF), barra fixa com Instagram/e-mail/localização.
-- Suporte: `FullBleedMedia.tsx` (crop 9:16/16:9 sem esticar/cortar mal),
-  `MagneticGlowButton.tsx` e `CTAButton.tsx` (CTAs), `ScrollFade.tsx`
-  (reveal simples pra conteúdo fora do container de scroll-snap),
-  `CategoryIcon.tsx`, `BrandsMarquee.tsx`.
+- Suporte: `FullBleedMedia.tsx` (crop 9:16/16:9 sem esticar/cortar mal;
+  aceita `desktopSrc` pra trocar a mídia por uma versão landscape só no
+  desktop — ver "Regras de design" — via JS `matchMedia`, nunca `<source
+  media>` dentro de `<video>`, que não tem suporte confiável entre
+  browsers), `MagneticGlowButton.tsx` e `CTAButton.tsx` (CTAs),
+  `ScrollFade.tsx` (reveal simples pra conteúdo fora do container de
+  scroll-snap), `CategoryIcon.tsx`, `BrandsMarquee.tsx`.
 
 Todo componente recebe cor/fonte via props — nunca tem cor hardcoded
 internamente. Adaptar o visual pra um cliente novo é passar props
@@ -393,6 +398,15 @@ genérica ou "gerada em massa" — mesmo vindo do mesmo template.
   página — nunca comprimir a ponto de perder nitidez, e priorizar
   layout que dê espaço grande para elas (galeria full-bleed, grid
   editorial), evitando thumbnails pequenos.
+- Toda foto/vídeo do cliente deve ter uma versão **portrait** (retrato,
+  9:16, usada no mobile) e, quando o cliente também fornecer, uma versão
+  **landscape** (paisagem, 16:9, usada só no desktop via `desktopSrc` do
+  `FullBleedMedia` — ver "O motor comprovado"). Se só existir a portrait,
+  ela é usada em todas as telas — nunca bloquear a página esperando a
+  landscape. Nomear os arquivos como `[Nome] NN - PT.ext` / `[Nome] NN -
+  LD.ext` (ex: `Isabella 01 - PT.mp4` / `Isabella 01 - LD.mp4`), guardados
+  em `assets/images/portrait|landscape/` e
+  `assets/videos/portrait|landscape/` (ver "Estrutura de pastas").
 - Mobile-first: testar sempre a partir de 375px de largura antes de
   ajustar para desktop.
 - Espaçamento generoso entre seções (mínimo 80px em desktop, 48px em
@@ -428,6 +442,14 @@ originalmente imaginado pra este projeto:
   imagem de fundo, ken-burns/zoom, contagem progressiva de número): aí
   sim usar GSAP com `scrub: true` ou `scrub: 1`, ou uma timeline
   disparada pelo `IntersectionObserver`.
+- **Zoom lento (ken-burns) padrão em toda seção de imagem cheia**: escala
+  de 1 para ~1.08 ao longo de ~6s (`ease: 'sine.out'`) enquanto a seção
+  está ativa, voltando pra 1 em 0.6s (`power2.out`) ao sair — disparado
+  por `IntersectionObserver`, não GSAP `scrub`. É o comportamento default
+  pra toda imagem full-bleed (Portfólio, Processo, Contato); não se
+  aplica a vídeo (que já tem movimento próprio) nem a uma seção que já
+  tenha um efeito contínuo diferente e intencional (ex: o parallax
+  vertical leve do Sobre).
 - **Hero em vídeo**: a primeira seção sempre tem um vídeo em loop, mudo,
   autoplay, cobrindo toda a tela como fundo. O texto (nome,
   posicionamento) fica sobreposto na frente do vídeo, nunca abaixo dele —

@@ -8,6 +8,8 @@ type Logo = {
 
 type BrandsMarqueeProps = {
   logos: Logo[]
+  /** Aumenta os logos só no desktop (md+) — no mobile não muda nada. Padrão: false. */
+  desktopEnlarged?: boolean
 }
 
 /**
@@ -16,7 +18,7 @@ type BrandsMarqueeProps = {
  * a segunda metade é idêntica à primeira, o reinício não tem soquinho
  * perceptível. `ease: 'none'` mantém velocidade constante.
  */
-export function BrandsMarquee({ logos }: BrandsMarqueeProps) {
+export function BrandsMarquee({ logos, desktopEnlarged = false }: BrandsMarqueeProps) {
   const trackRef = useRef<HTMLDivElement>(null)
   const tweenRef = useRef<gsap.core.Tween | null>(null)
 
@@ -47,13 +49,16 @@ export function BrandsMarquee({ logos }: BrandsMarqueeProps) {
       onMouseEnter={() => tweenRef.current?.pause()}
       onMouseLeave={() => tweenRef.current?.resume()}
     >
-      <div ref={trackRef} className="flex w-max items-center gap-6 sm:gap-8 md:gap-10">
+      <div
+        className={`flex w-max items-center gap-6 sm:gap-8 md:gap-10 ${desktopEnlarged ? 'md:gap-14' : ''}`}
+        ref={trackRef}
+      >
         {tiles.map((logo, i) => (
           <img
             key={i}
             src={logo.src}
             alt={i < logos.length ? logo.alt : ''}
-            className="h-24 w-auto shrink-0 opacity-80 grayscale sm:h-28 md:h-32"
+            className={`h-24 w-auto shrink-0 opacity-80 grayscale sm:h-28 md:h-32 ${desktopEnlarged ? 'md:h-44' : ''}`}
           />
         ))}
       </div>

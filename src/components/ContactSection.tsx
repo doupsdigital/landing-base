@@ -17,6 +17,8 @@ type ContactSectionColors = {
 
 type ContactSectionProps = {
   image: string
+  /** Foto alternativa exibida só no desktop (md+) — ver FullBleedMedia `desktopSrc`. No mobile continua `image`. */
+  desktopImage?: string
   title: string
   ctaPrimaryLabel: string
   ctaHref: string
@@ -81,6 +83,7 @@ function MailGlyph({ className }: { className?: string }) {
  */
 export function ContactSection({
   image,
+  desktopImage,
   title,
   ctaPrimaryLabel,
   ctaHref,
@@ -149,7 +152,7 @@ export function ContactSection({
       </div>
 
       <div ref={imgWrapRef} className="absolute inset-[-6%] will-change-transform" style={{ filter: 'brightness(0.35)' }}>
-        <FullBleedMedia src={image} type="image" alt="" />
+        <FullBleedMedia src={image} desktopSrc={desktopImage} type="image" alt="" />
       </div>
 
       <div

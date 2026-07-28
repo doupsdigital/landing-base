@@ -90,13 +90,11 @@ export function VinhoPage({ variation }: VinhoPageProps) {
       }))
     : portfolio
 
-  // Vídeo novo, na /vinho principal (sem variação) e na /vinho-v2 — ver
-  // Videos/Isabella - 10 - novo - Landscape.mp4. Apesar do nome, o arquivo
-  // saiu em retrato (864×1056, gerado por IA) — usa o mesmo tratamento
-  // padrão (retrato) das outras rotas, não o modo landscape. As demais
-  // variações (v1, v3, v4, v5) continuam com o vídeo original.
+  // Vídeo novo (par portrait/landscape "Isabella 01"), na /vinho principal
+  // (sem variação) e na /vinho-v2. As demais variações (v1, v3, v4, v5)
+  // continuam com o vídeo original.
   const useNewHeroVideo = !variation || variation.slug === 'vinho-v2'
-  const heroVideoSrc = useNewHeroVideo ? videos.v10Landscape : heroVideos.vinho
+  const heroVideoSrc = useNewHeroVideo ? videos.v01Portrait : heroVideos.vinho
 
   return (
     <div
@@ -106,6 +104,7 @@ export function VinhoPage({ variation }: VinhoPageProps) {
     >
       <VideoHero
         videoSrc={heroVideoSrc}
+        desktopVideoSrc={videos.v01Landscape}
         eyebrow="Modelo Comercial — São Paulo"
         title={title}
         titleClassName="text-[clamp(2.75rem,9vw,4.75rem)] leading-[0.98]"
@@ -133,7 +132,8 @@ export function VinhoPage({ variation }: VinhoPageProps) {
 
       {/* Sobre */}
       <AboutSection
-        image={images.rosto}
+        image={images.v02Portrait}
+        desktopImage={images.v02Landscape}
         bioLong={bioLong}
         stats={isabella.stats}
         overlayColor={bg}
@@ -169,11 +169,13 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         scroller={`#${SCROLL_ROOT_ID}`}
         partnersLogos={partnerLogos}
         partnersTitle="Marcas Parceiras"
+        desktopEnlarged
       />
 
       {/* Como funciona */}
       <ProcessSection
-        image={images.dress10}
+        image={images.v08Portrait}
+        desktopImage={images.v08Landscape}
         steps={processSteps}
         eyebrow="Da ideia à campanha"
         eyebrowStyle={{ ...body, color: accent }}
@@ -184,7 +186,8 @@ export function VinhoPage({ variation }: VinhoPageProps) {
 
       {/* Contato final */}
       <ContactSection
-        image={images.corpo}
+        image={images.v07Portrait}
+        desktopImage={images.v07Landscape}
         title="A presença que sua marca precisa."
         ctaPrimaryLabel={ctaContact}
         ctaHref={isabella.contactHref}

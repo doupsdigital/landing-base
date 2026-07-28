@@ -32,6 +32,8 @@ type CampaignsSectionProps = {
   /** Logos de marcas parceiras, exibidos em carrossel abaixo dos chips de categoria. */
   partnersLogos?: { src: string; alt: string }[]
   partnersTitle?: string
+  /** Aumenta os cards de categoria e os logos do carrossel só no desktop (md+) — no mobile não muda nada. Padrão: false. */
+  desktopEnlarged?: boolean
 }
 
 /**
@@ -50,6 +52,7 @@ export function CampaignsSection({
   scroller,
   partnersLogos,
   partnersTitle,
+  desktopEnlarged = false,
 }: CampaignsSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const chipRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -110,7 +113,11 @@ export function CampaignsSection({
             {intro}
           </p>
 
-          <div className="grid w-full max-w-md grid-cols-2 gap-3 sm:max-w-xl sm:gap-4 md:max-w-3xl md:grid-cols-4">
+          <div
+            className={`grid w-full max-w-md grid-cols-2 gap-3 sm:max-w-xl sm:gap-4 md:grid-cols-4 ${
+              desktopEnlarged ? 'md:max-w-6xl md:gap-6' : 'md:max-w-3xl'
+            }`}
+          >
             {categories.map((cat, i) => (
               <div
                 key={cat.label}
@@ -133,10 +140,18 @@ export function CampaignsSection({
                     background: `linear-gradient(to top, ${colors.bg}E6 0%, ${colors.bg}66 55%, ${colors.bg}40 100%)`,
                   }}
                 />
-                <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2.5 p-4 text-center sm:gap-3">
-                  <CategoryIcon name={cat.icon} className="h-5 w-5 shrink-0 sm:h-6 sm:w-6" style={{ color: colors.accent }} />
+                <div
+                  className={`relative z-10 flex h-full flex-col items-center justify-center gap-2.5 p-4 text-center sm:gap-3 ${
+                    desktopEnlarged ? 'md:gap-4 md:p-6' : ''
+                  }`}
+                >
+                  <CategoryIcon
+                    name={cat.icon}
+                    className={`h-5 w-5 shrink-0 sm:h-6 sm:w-6 ${desktopEnlarged ? 'md:h-8 md:w-8' : ''}`}
+                    style={{ color: colors.accent }}
+                  />
                   <span
-                    className="text-sm uppercase tracking-[0.08em] sm:text-base"
+                    className={`text-sm uppercase tracking-[0.08em] sm:text-base ${desktopEnlarged ? 'md:text-lg' : ''}`}
                     style={{ ...bodyStyle, color: colors.ink }}
                   >
                     {cat.label}
@@ -148,14 +163,14 @@ export function CampaignsSection({
         </div>
 
         {partnersLogos && partnersLogos.length > 0 ? (
-          <div className="mt-10 w-full max-w-3xl sm:mt-14 md:mt-8">
+          <div className={`mt-10 w-full max-w-3xl sm:mt-14 md:mt-8 ${desktopEnlarged ? 'md:max-w-6xl' : ''}`}>
             <p
               className="mb-5 text-center text-xs uppercase tracking-[0.3em] sm:mb-6 sm:text-sm"
               style={{ ...bodyStyle, color: colors.accent }}
             >
               {partnersTitle}
             </p>
-            <BrandsMarquee logos={partnersLogos} />
+            <BrandsMarquee logos={partnersLogos} desktopEnlarged={desktopEnlarged} />
           </div>
         ) : null}
       </div>

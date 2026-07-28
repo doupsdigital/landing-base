@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { gsap } from '../lib/gsap'
 import { FullBleedMedia } from './FullBleedMedia'
 import type { PortfolioItem } from '../content/isabella'
 
@@ -38,6 +39,9 @@ export function PinnedPortfolio({
   mediaBrightness = 1,
 }: PinnedPortfolioProps) {
   const itemRefs = useRef<(HTMLElement | null)[]>([])
+  // Wrapper das imagens (não dos vídeos, que já têm movimento próprio) —
+  // recebe o mesmo ken burns sutil do ProcessSection ao virar o item ativo.
+  const imgWrapRefs = useRef<(HTMLDivElement | null)[]>([])
   // Começa em -1 (nenhum item "ativo" ainda) em vez de 0: se o primeiro item
   // já nascesse ativo, a entrada nele nunca disparia a transição CSS (que só
   // anima em mudança de estado, não na primeira renderização).
@@ -47,9 +51,18 @@ export function PinnedPortfolio({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.intersectionRatio < ACTIVE_THRESHOLD) return
           const index = itemRefs.current.indexOf(entry.target as HTMLElement)
-          if (index !== -1) setActiveIndex(index)
+          if (index === -1) return
+          if (entry.intersectionRatio >= ACTIVE_THRESHOLD) {
+            setActiveIndex(index)
+          } else {
+            // Sem isso, sair do portfólio por uma seção de fora (ex: Sobre,
+            // acima) nunca "solta" o último item ativo — voltar pro mesmo
+            // item depois não muda o índice, então a transição CSS não
+            // dispara de novo (só funcionava indo de um item pro outro
+            // dentro do próprio portfólio, onde sempre há uma troca real).
+            setActiveIndex((prev) => (prev === index ? -1 : prev))
+          }
         })
       },
       { threshold: ACTIVE_THRESHOLD },
@@ -58,6 +71,22 @@ export function PinnedPortfolio({
     itemRefs.current.forEach((el) => el && observer.observe(el))
     return () => observer.disconnect()
   }, [items.length])
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) return
+
+    imgWrapRefs.current.forEach((el, i) => {
+      if (!el) return
+      const active = i === activeIndex
+      gsap.to(el, {
+        scale: active ? 1.08 : 1,
+        duration: active ? 6 : 0.6,
+        ease: active ? 'sine.out' : 'power2.out',
+        overwrite: 'auto',
+      })
+    })
+  }, [activeIndex])
 
   return (
     <div className="relative w-full">
@@ -79,9 +108,21 @@ export function PinnedPortfolio({
           className="relative h-dvh w-full snap-start snap-always overflow-hidden transition-opacity duration-700 ease-out"
           style={{ opacity: i === activeIndex ? 1 : 0 }}
         >
-          <div className="absolute inset-0" style={{ filter: `brightness(${mediaBrightness})` }}>
-            <FullBleedMedia src={item.src} type={item.type} alt={item.alt} />
-          </div>
+          {item.type === 'image' ? (
+            <div
+              ref={(el) => {
+                imgWrapRefs.current[i] = el
+              }}
+              className="absolute inset-[-6%] will-change-transform"
+              style={{ filter: `brightness(${mediaBrightness})` }}
+            >
+              <FullBleedMedia src={item.src} desktopSrc={item.desktopSrc} type={item.type} alt={item.alt} />
+            </div>
+          ) : (
+            <div className="absolute inset-0" style={{ filter: `brightness(${mediaBrightness})` }}>
+              <FullBleedMedia src={item.src} desktopSrc={item.desktopSrc} type={item.type} alt={item.alt} />
+            </div>
+          )}
 
           <div
             className="absolute inset-0"

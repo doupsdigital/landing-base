@@ -1,35 +1,84 @@
-import rosto from '../assets/images/isabella-rosto.jpg'
-import corpo from '../assets/images/isabella-corpo.jpg'
-import fitness from '../assets/images/isabella-fitness.jpg'
-import fashion02 from '../assets/images/isabella-fashion-02.jpg'
-import color06 from '../assets/images/isabella-color-06.jpg'
-import beauty09 from '../assets/images/isabella-beauty-09.jpg'
-import dress10 from '../assets/images/isabella-dress-10.jpeg'
-import skirt11 from '../assets/images/isabella-skirt-11.jpg'
+// Ainda sem substituto novo (nenhum arquivo "Isabella NN" recebido pra essas
+// categorias) — continuam nos arquivos antigos até serem organizados.
+import fitness from '../assets/images/portrait/isabella-fitness.jpg'
+import beauty09 from '../assets/images/portrait/isabella-beauty-09.jpg'
+import skirt11 from '../assets/images/portrait/isabella-skirt-11.jpg'
+import image02Portrait from '../assets/images/portrait/Isabella 02 - PT.png'
+import image02Landscape from '../assets/images/landscape/Isabella 02 - LD.png'
+import image04Portrait from '../assets/images/portrait/Isabella 04 - PT.png'
+import image04Landscape from '../assets/images/landscape/Isabella 04 - LD.png'
+import image06Portrait from '../assets/images/portrait/Isabella 06 - PT.png'
+import image06Landscape from '../assets/images/landscape/Isabella 06 - LD.png'
+import image08Portrait from '../assets/images/portrait/Isabella 08 - PT.png'
+import image08Landscape from '../assets/images/landscape/Isabella 08 - LD.png'
+import image07Portrait from '../assets/images/portrait/Isabella 07 - PT.png'
+import image07Landscape from '../assets/images/landscape/Isabella 07 - LD.png'
 
-import videoFitness from '../assets/videos/isabella-fitness.mp4'
-import video09 from '../assets/videos/isabella-09.mp4'
-import video10 from '../assets/videos/isabella-10.mp4'
-import video11 from '../assets/videos/isabella-11.mp4'
-import video10Landscape from '../assets/videos/Isabella - 10 - novo - Landscape.mp4'
+// videoFitness: exceção pedida — continua no arquivo antigo até ter um
+// vídeo novo.
+import videoFitness from '../assets/videos/portrait/isabella-fitness.mp4'
+import video01Portrait from '../assets/videos/portrait/Isabella 01 - PT.mp4'
+import video01Landscape from '../assets/videos/landscape/Isabella 01 - LD.mp4'
+import video02Portrait from '../assets/videos/portrait/Isabella 02 - PT.mp4'
+import video02Landscape from '../assets/videos/landscape/Isabella 02 - LD.mp4'
+import video03Portrait from '../assets/videos/portrait/Isabella 03 - PT.mp4'
+import video03Landscape from '../assets/videos/landscape/Isabella 03 - LD.mp4'
 
 export const images = {
-  rosto,
-  corpo,
+  // Repontadas pros arquivos novos "Isabella NN - PT" (mesmas chaves, usadas
+  // em Home/Noir/Riviera/Studio/Cover) — os antigos isabella-rosto.jpg,
+  // isabella-corpo.jpg, isabella-fashion-02.jpg, isabella-color-06.jpg e
+  // isabella-dress-10.jpeg não são mais referenciados em lugar nenhum.
+  rosto: image02Portrait,
+  corpo: image07Portrait,
   fitness,
-  fashion02,
-  color06,
+  fashion02: image04Portrait,
+  color06: image06Portrait,
   beauty09,
-  dress10,
+  dress10: image08Portrait,
   skirt11,
+  // Par portrait/landscape da seção Sobre (Vinho) — portrait no mobile,
+  // landscape no desktop.
+  v02Portrait: image02Portrait,
+  v02Landscape: image02Landscape,
+  // Par portrait/landscape do item "Look do dia" do portfólio — portrait no
+  // mobile, landscape no desktop.
+  v04Portrait: image04Portrait,
+  v04Landscape: image04Landscape,
+  // Par portrait/landscape do item "Criação de Conteúdo" do portfólio —
+  // portrait no mobile, landscape no desktop.
+  v06Portrait: image06Portrait,
+  v06Landscape: image06Landscape,
+  // Par portrait/landscape da seção "Da ideia à campanha" — portrait no
+  // mobile, landscape no desktop.
+  v08Portrait: image08Portrait,
+  v08Landscape: image08Landscape,
+  // Par portrait/landscape da seção Contato — portrait no mobile, landscape
+  // no desktop.
+  v07Portrait: image07Portrait,
+  v07Landscape: image07Landscape,
 }
 
 export const videos = {
   fitness: videoFitness,
-  v09: video09,
-  v10: video10,
-  v11: video11,
-  v10Landscape: video10Landscape,
+  // Repontadas pros arquivos novos (mesmas chaves, usadas no heroVideos do
+  // Noir/Riviera/Studio/Vinho) — isabella-09.mp4, isabella-10.mp4 e
+  // isabella-11.mp4 não são mais referenciados em lugar nenhum.
+  v09: video03Portrait,
+  v10: video01Portrait,
+  v11: video02Portrait,
+  // Par portrait/landscape do hero (tela 1) — ver VinhoPage: portrait no
+  // mobile, landscape no desktop.
+  v01Portrait: video01Portrait,
+  v01Landscape: video01Landscape,
+  // Par portrait/landscape do item "Provador" do portfólio — portrait no
+  // mobile, landscape no desktop.
+  v02Portrait: video02Portrait,
+  v02Landscape: video02Landscape,
+  // Par portrait/landscape do item "Publicidade" do portfólio — portrait no
+  // mobile, landscape no desktop.
+  v03Portrait: video03Portrait,
+  v03Landscape: video03Landscape,
 }
 
 // Vídeo de abertura (hero full-bleed) de cada uma das 5 direções visuais.
@@ -82,8 +131,8 @@ export const isabella = {
 }
 
 export type PortfolioItem =
-  | { type: 'image'; src: string; alt: string; caption: string; description?: string }
-  | { type: 'video'; src: string; poster?: string; alt: string; caption: string; description?: string }
+  | { type: 'image'; src: string; desktopSrc?: string; alt: string; caption: string; description?: string }
+  | { type: 'video'; src: string; desktopSrc?: string; poster?: string; alt: string; caption: string; description?: string }
 
 // Alterna estritamente imagem/vídeo — evita ter dois vídeos adjacentes na
 // sequência fixada do portfólio, que era a causa mais provável do glitch
@@ -92,7 +141,8 @@ export type PortfolioItem =
 export const portfolio: PortfolioItem[] = [
   {
     type: 'video',
-    src: videos.v11,
+    src: videos.v02Portrait,
+    desktopSrc: videos.v02Landscape,
     alt: 'Isabella em movimento, produção de moda',
     caption: 'Provador.',
     description:
@@ -100,7 +150,8 @@ export const portfolio: PortfolioItem[] = [
   },
   {
     type: 'image',
-    src: images.fashion02,
+    src: images.v04Portrait,
+    desktopSrc: images.v04Landscape,
     alt: 'Isabella em ensaio de estúdio, look casual chic',
     caption: 'Look do dia.',
     description:
@@ -108,7 +159,8 @@ export const portfolio: PortfolioItem[] = [
   },
   {
     type: 'video',
-    src: videos.v09,
+    src: videos.v03Portrait,
+    desktopSrc: videos.v03Landscape,
     alt: 'Isabella em still de beleza editorial',
     caption: 'Publicidade.',
     description:
@@ -116,7 +168,8 @@ export const portfolio: PortfolioItem[] = [
   },
   {
     type: 'image',
-    src: images.color06,
+    src: images.v06Portrait,
+    desktopSrc: images.v06Landscape,
     alt: 'Isabella sorrindo em ativação de marca ao ar livre',
     caption: 'Criação de Conteúdo.',
     description:

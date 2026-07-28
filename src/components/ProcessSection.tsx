@@ -19,6 +19,8 @@ type ProcessSectionColors = {
 
 type ProcessSectionProps = {
   image: string
+  /** Foto alternativa exibida só no desktop (md+) — ver FullBleedMedia `desktopSrc`. No mobile continua `image`. */
+  desktopImage?: string
   steps: ProcessStep[]
   eyebrow: string
   eyebrowStyle: CSSProperties
@@ -49,6 +51,7 @@ const LINE_DURATION_MS = 700
  */
 export function ProcessSection({
   image,
+  desktopImage,
   steps,
   eyebrow,
   eyebrowStyle,
@@ -100,7 +103,7 @@ export function ProcessSection({
       </div>
 
       <div ref={imgWrapRef} className="absolute inset-[-6%] will-change-transform" style={{ filter: 'brightness(0.32)' }}>
-        <FullBleedMedia src={image} type="image" alt="" />
+        <FullBleedMedia src={image} desktopSrc={desktopImage} type="image" alt="" />
       </div>
 
       <div

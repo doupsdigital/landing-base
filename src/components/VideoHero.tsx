@@ -48,6 +48,8 @@ type VideoHeroProps = {
   titleClassName?: string
   /** Vídeo de fundo em 16:9 em vez do padrão 9:16 do projeto — ver FullBleedMedia. */
   videoOrientation?: 'portrait' | 'landscape'
+  /** Clipe alternativo exibido só no desktop (md+) — ver FullBleedMedia `desktopSrc`. No mobile continua `videoSrc`. */
+  desktopVideoSrc?: string
   /** Reanima o texto (com 350ms de atraso) toda vez que a seção volta a ficar visível no scroll, em vez de tocar só uma vez no load. Padrão: false. */
   replayOnScroll?: boolean
 }
@@ -71,6 +73,7 @@ export function VideoHero({
   labelFont,
   titleClassName = 'text-[clamp(2.5rem,7vw,5.5rem)] leading-[1.02]',
   videoOrientation = 'portrait',
+  desktopVideoSrc,
   replayOnScroll = false,
 }: VideoHeroProps) {
   const dataFont = labelFont ?? bodyFont
@@ -134,6 +137,7 @@ export function VideoHero({
         mediaRef={videoRef}
         className="absolute inset-0"
         orientation={videoOrientation}
+        desktopSrc={desktopVideoSrc}
       />
       <div
         ref={overlayRef}
