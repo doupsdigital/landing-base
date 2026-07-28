@@ -4,6 +4,7 @@ import { VideoHero } from '../components/VideoHero'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { SectionDivider } from '../components/SectionDivider'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
+import { vinhoVariations } from '../content/vinhoVariations'
 
 const bg = '#FFFFFF'
 const ink = '#15140F'
@@ -16,20 +17,31 @@ const display = { fontFamily: "'Space Grotesk', sans-serif", color: ink }
 const body = { fontFamily: "'Inter', sans-serif" }
 const mono = { fontFamily: "'IBM Plex Mono', monospace" }
 
+// Copy: variação "Resultados & Mídia Kit" (ver src/content/vinhoVariations.ts)
+// — tom orientado a dados/métricas combina com o Comp Card (dt/dd) do Studio.
+const copy = vinhoVariations.v1
+const portfolioItems = portfolio.map((item, i) => ({
+  ...item,
+  caption: `${copy.portfolio[i].title}.`,
+  description: copy.portfolio[i].description,
+}))
+
 export function StudioPage() {
   return (
     <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
       <VideoHero
         videoSrc={heroVideos.studio}
         eyebrow="Modelo Comercial — São Paulo"
-        title="Isabella Marques"
+        title={copy.headline}
         titleClassName="text-[clamp(2.25rem,6vw,4rem)] leading-[1.02]"
-        lead={isabella.bioShort}
+        lead={copy.subheadline}
         location={isabella.location.split(',')[0]}
         locationLabel={isabella.locationLabel}
         stats={isabella.socialStats}
-        ctaLabel="Falar com a modelo"
+        ctaLabel={copy.ctaPrimary}
         ctaHref={isabella.contactHref}
+        ctaSecondaryLabel={copy.ctaSecondary}
+        ctaSecondaryHref={isabella.contactHref}
         colors={{
           overlayTint: ink,
           text: bg,
@@ -49,7 +61,7 @@ export function StudioPage() {
           <span className="mb-4 block text-sm sm:text-base uppercase tracking-[0.16em]" style={{ ...mono, color: accent }}>
             Sobre
           </span>
-          <p className="max-w-[60ch] text-lg leading-relaxed opacity-90">{isabella.bioLong}</p>
+          <p className="max-w-[60ch] text-lg leading-relaxed opacity-90">{copy.sobre}</p>
         </ScrollFade>
       </section>
 
@@ -113,7 +125,7 @@ export function StudioPage() {
 
       {/* Portfólio — pinado */}
       <PinnedPortfolio
-        items={portfolio}
+        items={portfolioItems}
         eyebrow="Especialidades"
         eyebrowStyle={{ ...mono, color: '#DCE0D6' }}
         captionStyle={{ ...display, color: '#FFFFFF' }}
@@ -134,7 +146,7 @@ export function StudioPage() {
               className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
               style={{ backgroundColor: ink, color: bg, ...mono }}
             >
-              Falar com a modelo
+              {copy.ctaPrimary}
             </CTAButton>
           </div>
         </ScrollFade>

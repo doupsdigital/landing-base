@@ -5,6 +5,7 @@ import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
 import { SectionDivider } from '../components/SectionDivider'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
+import { vinhoVariations } from '../content/vinhoVariations'
 
 const ink = '#F2EFEA'
 const bg = '#0C0C0D'
@@ -15,6 +16,15 @@ const line = '#2A2A2C'
 const display = { fontFamily: "'Fraunces', serif", fontStyle: 'italic' as const, color: ink }
 const body = { fontFamily: "'Inter', sans-serif" }
 
+// Copy: variação "Editorial & Autoral" (ver src/content/vinhoVariations.ts) —
+// tom minimalista/atemporal combina com o visual escuro e editorial do Noir.
+const copy = vinhoVariations.v2
+const portfolioItems = portfolio.map((item, i) => ({
+  ...item,
+  caption: `${copy.portfolio[i].title}.`,
+  description: copy.portfolio[i].description,
+}))
+
 export function NoirPage() {
   return (
     <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
@@ -23,12 +33,14 @@ export function NoirPage() {
         eyebrow="Modelo Comercial — São Paulo"
         title={'Isabella\nMarques'}
         titleClassName="text-[clamp(2.75rem,9vw,6.5rem)] leading-[0.98]"
-        lead={isabella.bioShort}
+        lead={copy.subheadline}
         location={isabella.location.split(',')[0]}
         locationLabel={isabella.locationLabel}
         stats={isabella.socialStats}
-        ctaLabel="Falar com a modelo"
+        ctaLabel={copy.ctaPrimary}
         ctaHref={isabella.contactHref}
+        ctaSecondaryLabel={copy.ctaSecondary}
+        ctaSecondaryHref={isabella.contactHref}
         colors={{ overlayTint: bg, text: ink, mutedText: muted, accent, ctaBg: ink, ctaText: bg }}
         displayFont={display}
         bodyFont={body}
@@ -38,7 +50,7 @@ export function NoirPage() {
       <SectionDivider label="Sobre" labelStyle={{ color: accent }} bg={bg} />
       <AboutSection
         image={images.rosto}
-        bioLong={isabella.bioLong}
+        bioLong={copy.sobre}
         stats={isabella.stats}
         overlayColor={bg}
         bodyStyle={{ ...body, color: ink }}
@@ -48,7 +60,7 @@ export function NoirPage() {
 
       {/* Portfólio — pinado */}
       <PinnedPortfolio
-        items={portfolio}
+        items={portfolioItems}
         eyebrow="Especialidades"
         eyebrowStyle={{ ...body, color: accent }}
         captionStyle={{ ...display }}
@@ -87,7 +99,7 @@ export function NoirPage() {
               className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
               style={{ backgroundColor: ink, color: bg }}
             >
-              Falar com a modelo
+              {copy.ctaPrimary}
             </CTAButton>
           </div>
         </ScrollFade>

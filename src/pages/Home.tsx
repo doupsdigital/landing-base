@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { images } from '../content/isabella'
-import { vinhoVariations } from '../content/vinhoVariations'
 
 const directions = [
   {
@@ -92,31 +91,6 @@ export function Home() {
             </motion.div>
           ))}
         </div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
-          className="mb-4 mt-16 text-xs uppercase tracking-[0.2em] text-neutral-400"
-        >
-          Testes — variações de copy (Vinho Editorial)
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.46, ease: 'easeOut' }}
-          className="flex flex-wrap gap-3"
-        >
-          {Object.entries(vinhoVariations).map(([key, v]) => (
-            <Link
-              key={key}
-              to={`/${v.slug}`}
-              className="rounded-full border border-neutral-800 px-4 py-2 text-sm text-neutral-300 transition-colors hover:border-neutral-500 hover:text-neutral-100"
-            >
-              /{v.slug} — {v.label}
-            </Link>
-          ))}
-        </motion.div>
       </div>
     </main>
   )

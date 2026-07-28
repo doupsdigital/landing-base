@@ -5,6 +5,7 @@ import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
 import { SectionDivider } from '../components/SectionDivider'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
+import { vinhoVariations } from '../content/vinhoVariations'
 
 const bg = '#EFE6D3'
 const ink = '#2B2118'
@@ -15,6 +16,15 @@ const line = '#D3C3A0'
 
 const display = { fontFamily: "'Cormorant Garamond', serif", color: ink }
 const body = { fontFamily: "'Manrope', sans-serif" }
+
+// Copy: variação "Confiança & Autoridade" (ver src/content/vinhoVariations.ts)
+// — tom premium/confiança combina com o visual dourado e refinado da Riviera.
+const copy = vinhoVariations.v4
+const portfolioItems = portfolio.map((item, i) => ({
+  ...item,
+  caption: `${copy.portfolio[i].title}.`,
+  description: copy.portfolio[i].description,
+}))
 
 function TapeRule({ marks = ['0', '25', '50', '75', '100'] }: { marks?: string[] }) {
   return (
@@ -37,12 +47,14 @@ export function RivieraPage() {
         eyebrow="Modelo Comercial — São Paulo"
         title="Isabella Marques"
         titleClassName="text-[clamp(2.5rem,7vw,5.25rem)] leading-[1.02]"
-        lead={isabella.bioShort}
+        lead={copy.subheadline}
         location={isabella.location.split(',')[0]}
         locationLabel={isabella.locationLabel}
         stats={isabella.socialStats}
-        ctaLabel="Falar com a modelo"
+        ctaLabel={copy.ctaPrimary}
         ctaHref={isabella.contactHref}
+        ctaSecondaryLabel={copy.ctaSecondary}
+        ctaSecondaryHref={isabella.contactHref}
         colors={{
           overlayTint: ink,
           text: bg,
@@ -64,7 +76,7 @@ export function RivieraPage() {
       <SectionDivider label="Sobre" labelStyle={{ color: '#EFE6D3' }} bg={ink} />
       <AboutSection
         image={images.rosto}
-        bioLong={isabella.bioLong}
+        bioLong={copy.sobre}
         overlayColor={ink}
         bodyStyle={{ color: bg }}
         mutedStyle={{ color: surface }}
@@ -95,7 +107,7 @@ export function RivieraPage() {
 
       {/* Portfólio — pinado */}
       <PinnedPortfolio
-        items={portfolio}
+        items={portfolioItems}
         eyebrow="Especialidades"
         eyebrowStyle={{ ...body, color: '#EFE6D3' }}
         captionStyle={{ ...display, color: '#F8F3E8' }}
@@ -139,7 +151,7 @@ export function RivieraPage() {
               className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
               style={{ backgroundColor: ink, color: bg }}
             >
-              Falar com a modelo
+              {copy.ctaPrimary}
             </CTAButton>
           </div>
         </ScrollFade>

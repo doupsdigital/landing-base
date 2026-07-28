@@ -9,6 +9,7 @@ import { FullBleedMedia } from '../components/FullBleedMedia'
 import { gsap } from '../lib/gsap'
 import { hexToRgba } from '../lib/color'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
+import { vinhoVariations } from '../content/vinhoVariations'
 
 const bg = '#14150F'
 const ink = '#EFE9DD'
@@ -19,6 +20,15 @@ const line = '#33362A'
 const display = { fontFamily: "'DM Serif Display', serif", fontStyle: 'italic' as const, color: ink }
 const body = { fontFamily: "'Inter', sans-serif" }
 const data = { fontFamily: "'Archivo', sans-serif" }
+
+// Copy: variação "Lifestyle & Conexão" (ver src/content/vinhoVariations.ts)
+// — tom pessoal/caloroso contrasta bem com o nome gigante e dramático do Cover.
+const copy = vinhoVariations.v5
+const portfolioItems = portfolio.map((item, i) => ({
+  ...item,
+  caption: `${copy.portfolio[i].title}.`,
+  description: copy.portfolio[i].description,
+}))
 
 function CoverHero() {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -92,7 +102,7 @@ function CoverHero() {
           className="mx-auto mt-4 max-w-[42ch] text-base leading-relaxed sm:text-lg"
           style={{ ...body, color: ink, opacity: 0.9 }}
         >
-          {isabella.bioShort}
+          {copy.subheadline}
         </p>
 
         <div ref={statsRef} className="mt-6 flex flex-wrap items-start justify-center gap-x-10 gap-y-3">
@@ -116,7 +126,7 @@ function CoverHero() {
             className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
             style={{ backgroundColor: ink, color: bg, ...data }}
           >
-            Falar com a modelo
+            {copy.ctaPrimary}
           </CTAButton>
         </div>
       </div>
@@ -133,7 +143,7 @@ export function CoverPage() {
       <SectionDivider label="Sobre" labelStyle={{ ...data, color: accent }} bg={bg} />
       <AboutSection
         image={images.rosto}
-        bioLong={isabella.bioLong}
+        bioLong={copy.sobre}
         stats={isabella.stats}
         overlayColor={bg}
         bodyStyle={{ ...body, color: ink }}
@@ -143,7 +153,7 @@ export function CoverPage() {
 
       {/* Portfólio — pinado */}
       <PinnedPortfolio
-        items={portfolio}
+        items={portfolioItems}
         eyebrow="Especialidades"
         eyebrowStyle={{ ...data, color: accent }}
         captionStyle={{ ...display }}
@@ -182,7 +192,7 @@ export function CoverPage() {
               className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
               style={{ backgroundColor: ink, color: bg, ...data }}
             >
-              Falar com a modelo
+              {copy.ctaPrimary}
             </CTAButton>
           </div>
         </ScrollFade>
