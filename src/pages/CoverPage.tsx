@@ -144,7 +144,7 @@ export function CoverPage() {
       {/* Portfólio — pinado */}
       <PinnedPortfolio
         items={portfolio}
-        eyebrow="Portfólio"
+        eyebrow="Especialidades"
         eyebrowStyle={{ ...data, color: accent }}
         captionStyle={{ ...display }}
         descriptionStyle={{ ...body, color: ink }}

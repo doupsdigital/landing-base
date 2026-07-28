@@ -125,7 +125,7 @@ export function VinhoPage({ variation }: VinhoPageProps) {
       {/* Portfólio — pinado */}
       <PinnedPortfolio
         items={portfolioItems}
-        eyebrow="Portfólio"
+        eyebrow="Especialidades"
         eyebrowStyle={{ ...body, color: accent }}
         captionStyle={{ ...display }}
         descriptionStyle={{ ...body, color: ink }}
@@ -137,7 +137,7 @@ export function VinhoPage({ variation }: VinhoPageProps) {
       <CampaignsSection
         categories={campaignCategories}
         intro="Um perfil versátil o suficiente pra transitar entre esses universos sem perder consistência."
-        eyebrow="Campanhas ideais"
+        eyebrow="Campanhas"
         eyebrowStyle={{ ...body, color: accent }}
         bodyStyle={body}
         colors={{ ink, muted, accent, line, bg }}
@@ -155,6 +155,8 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         ctaSecondaryLabel={ctaSecondary}
         ctaSecondaryHref={isabella.contactHref}
         ctaTagline="Parcerias"
+        mediaKitDescription="Reúne formatos de conteúdo, métricas e disponibilidade para propostas de parceria."
+        mediaKitCtaLabel="Solicitar Mídia Kit"
         instagramHandle={isabella.instagramHandle}
         instagramHref={isabella.instagramHref}
         emailLabel={isabella.contactLabel}

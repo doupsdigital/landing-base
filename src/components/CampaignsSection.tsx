@@ -98,7 +98,7 @@ export function CampaignsSection({
       <div
         className={`-mt-6 flex min-h-dvh w-full flex-col items-center px-6 sm:-mt-8 sm:px-10 md:px-16 ${
           partnersLogos && partnersLogos.length > 0
-            ? 'justify-start pb-8 pt-16 sm:pb-12 sm:pt-20 md:pt-24'
+            ? 'justify-start pb-8 pt-16 sm:pb-12 sm:pt-20 md:pb-8 md:pt-20'
             : 'justify-center py-10'
         }`}
       >
@@ -110,7 +110,7 @@ export function CampaignsSection({
             {intro}
           </p>
 
-          <div className="grid w-full max-w-md grid-cols-2 gap-3 sm:max-w-xl sm:gap-4">
+          <div className="grid w-full max-w-md grid-cols-2 gap-3 sm:max-w-xl sm:gap-4 md:max-w-3xl md:grid-cols-4">
             {categories.map((cat, i) => (
               <div
                 key={cat.label}
@@ -148,7 +148,7 @@ export function CampaignsSection({
         </div>
 
         {partnersLogos && partnersLogos.length > 0 ? (
-          <div className="mt-10 w-full max-w-3xl sm:mt-14 md:mt-16">
+          <div className="mt-10 w-full max-w-3xl sm:mt-14 md:mt-8">
             <p
               className="mb-5 text-center text-xs uppercase tracking-[0.3em] sm:mb-6 sm:text-sm"
               style={{ ...bodyStyle, color: colors.accent }}

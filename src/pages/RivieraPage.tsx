@@ -96,7 +96,7 @@ export function RivieraPage() {
       {/* Portfólio — pinado */}
       <PinnedPortfolio
         items={portfolio}
-        eyebrow="Portfólio"
+        eyebrow="Especialidades"
         eyebrowStyle={{ ...body, color: '#EFE6D3' }}
         captionStyle={{ ...display, color: '#F8F3E8' }}
         descriptionStyle={{ ...body, color: '#EFE6D3' }}

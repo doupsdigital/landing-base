@@ -49,7 +49,7 @@ export function NoirPage() {
       {/* Portfólio — pinado */}
       <PinnedPortfolio
         items={portfolio}
-        eyebrow="Portfólio"
+        eyebrow="Especialidades"
         eyebrowStyle={{ ...body, color: accent }}
         captionStyle={{ ...display }}
         descriptionStyle={{ ...body, color: ink }}

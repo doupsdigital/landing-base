@@ -114,7 +114,7 @@ export function StudioPage() {
       {/* Portfólio — pinado */}
       <PinnedPortfolio
         items={portfolio}
-        eyebrow="Portfólio"
+        eyebrow="Especialidades"
         eyebrowStyle={{ ...mono, color: '#DCE0D6' }}
         captionStyle={{ ...display, color: '#FFFFFF' }}
         descriptionStyle={{ ...body, color: surface }}
