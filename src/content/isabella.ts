@@ -76,6 +76,9 @@ export const isabella = {
   locationLabel: 'Base & atuação nacional',
   contactHref: 'mailto:contato@isabellamarques.com',
   contactLabel: 'contato@isabellamarques.com',
+  instagramHandle: '@isabella.marques',
+  instagramHref: 'https://instagram.com/isabella.marques',
+  responseTime: 'Resposta pessoal em até 24h.',
 }
 
 export type PortfolioItem =

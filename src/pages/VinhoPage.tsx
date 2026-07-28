@@ -1,7 +1,9 @@
-import { CTAButton } from '../components/CTAButton'
 import { VideoHero } from '../components/VideoHero'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
+import { CampaignsSection } from '../components/CampaignsSection'
+import type { CampaignCategory } from '../components/CampaignsSection'
+import { ContactSection } from '../components/ContactSection'
 import { isabella, images, portfolio, heroVideos, videos } from '../content/isabella'
 import type { VinhoVariation } from '../content/vinhoVariations'
 
@@ -21,6 +23,18 @@ type VinhoPageProps = {
 }
 
 const SCROLL_ROOT_ID = 'vinho-scroll-root'
+
+// Enriquecimento local (ícone + foto de apoio em 3 delas) das categorias de
+// `isabella.categories` — mantido aqui, não na fonte compartilhada, porque
+// Noir/Riviera/Studio/Cover ainda mapeiam esse array como strings simples.
+const campaignCategories: CampaignCategory[] = [
+  { label: 'Moda feminina', icon: 'dress', image: images.fashion02 },
+  { label: 'Beleza & skincare', icon: 'sparkle', image: images.beauty09 },
+  { label: 'Fitness & wellness', icon: 'dumbbell', image: images.fitness },
+  { label: 'Joias & acessórios', icon: 'gem' },
+  { label: 'Hotelaria & gastronomia', icon: 'bell' },
+  { label: 'Lifestyle & marcas premium', icon: 'star' },
+]
 
 export function VinhoPage({ variation }: VinhoPageProps) {
   const title = variation?.headline ?? 'Isabella Marques'
@@ -104,64 +118,36 @@ export function VinhoPage({ variation }: VinhoPageProps) {
       />
 
       {/* Campanhas ideais */}
-      <section className="relative w-full snap-start snap-always">
-        <div className="pointer-events-none sticky top-6 z-50 flex justify-center sm:top-8">
-          <span
-            className="text-sm uppercase tracking-[0.3em] sm:text-base"
-            style={{ ...body, color: accent, textShadow: '0 1px 16px rgba(0,0,0,0.7)' }}
-          >
-            Campanhas ideais
-          </span>
-        </div>
-        <div className="-mt-6 flex min-h-screen w-full flex-col items-center justify-center px-6 py-16 sm:-mt-8 sm:px-10 md:px-16">
-          <div className="flex flex-wrap justify-center gap-3">
-            {isabella.categories.map((c) => (
-              <span
-                key={c}
-                className="rounded-sm border px-4 py-2 text-sm"
-                style={{ borderColor: line, color: ink }}
-              >
-                {c}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <CampaignsSection
+        categories={campaignCategories}
+        intro="Um perfil versátil o suficiente pra transitar entre esses universos sem perder consistência."
+        eyebrow="Campanhas ideais"
+        eyebrowStyle={{ ...body, color: accent }}
+        bodyStyle={body}
+        colors={{ ink, muted, accent, line, bg }}
+        scroller={`#${SCROLL_ROOT_ID}`}
+      />
 
       {/* Contato final */}
-      <section id="contato" className="relative w-full snap-start snap-always">
-        <div className="pointer-events-none sticky top-6 z-50 flex justify-center sm:top-8">
-          <span
-            className="text-sm uppercase tracking-[0.3em] sm:text-base"
-            style={{ ...body, color: accent, textShadow: '0 1px 16px rgba(0,0,0,0.7)' }}
-          >
-            Contato
-          </span>
-        </div>
-        <div className="-mt-6 flex min-h-screen w-full flex-col items-center justify-center px-6 py-24 text-center sm:-mt-8 sm:px-10">
-          <h2 style={display} className="text-[clamp(2rem,5vw,4rem)]">
-            Vamos criar juntos.
-          </h2>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-            <CTAButton
-              href={isabella.contactHref}
-              className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
-              style={{ backgroundColor: vinho, color: ink }}
-            >
-              {ctaPrimary}
-            </CTAButton>
-            {ctaSecondary ? (
-              <CTAButton
-                href={isabella.contactHref}
-                className="text-[13px] uppercase tracking-[0.08em] underline underline-offset-4 opacity-80 transition-opacity hover:opacity-100"
-                style={{ color: ink }}
-              >
-                {ctaSecondary}
-              </CTAButton>
-            ) : null}
-          </div>
-        </div>
-      </section>
+      <ContactSection
+        image={images.corpo}
+        title="Vamos criar juntos."
+        ctaPrimaryLabel={ctaPrimary}
+        ctaHref={isabella.contactHref}
+        ctaSecondaryLabel={ctaSecondary}
+        ctaSecondaryHref={isabella.contactHref}
+        instagramHandle={isabella.instagramHandle}
+        instagramHref={isabella.instagramHref}
+        emailLabel={isabella.contactLabel}
+        emailHref={isabella.contactHref}
+        responseTime={isabella.responseTime}
+        locationLine={`${isabella.location.split(',')[0]} · Atuação nacional`}
+        eyebrow="Contato"
+        eyebrowStyle={{ ...body, color: accent }}
+        displayFont={display}
+        bodyStyle={body}
+        colors={{ ink, muted, accent, line, ctaBg: vinho, ctaText: ink }}
+      />
 
       <footer className="border-t px-6 py-8 text-[11px] sm:px-10" style={{ borderColor: line, color: muted }}>
         {isabella.name} · {isabella.location} · {isabella.contactLabel}
