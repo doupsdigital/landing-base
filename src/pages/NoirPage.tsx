@@ -1,11 +1,28 @@
-import { ScrollFade } from '../components/ScrollFade'
-import { CTAButton } from '../components/CTAButton'
 import { VideoHero } from '../components/VideoHero'
 import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
-import { SectionDivider } from '../components/SectionDivider'
+import { CampaignsSection } from '../components/CampaignsSection'
+import type { CampaignCategory } from '../components/CampaignsSection'
+import { ProcessSection } from '../components/ProcessSection'
+import type { ProcessStep } from '../components/ProcessSection'
+import { ContactSection } from '../components/ContactSection'
 import { isabella, images, portfolio, heroVideos } from '../content/isabella'
 import { vinhoVariations } from '../content/vinhoVariations'
+import logoGucci from '../assets/images/logos/01 - Gucci_logo.png'
+import logoVersace from '../assets/images/logos/02 - versace-primary-logo.png'
+import logoChanel from '../assets/images/logos/03 - Chanel_logo.png'
+import logoDolceGabbana from '../assets/images/logos/04 - Dolce-Gabbana-Logo.png'
+import logoLouisVuitton from '../assets/images/logos/05 Louis-Vuitton-logo.png'
+import logoZara from '../assets/images/logos/06 - ZARA-logo.png'
+
+const partnerLogos = [
+  { src: logoGucci, alt: 'Gucci' },
+  { src: logoVersace, alt: 'Versace' },
+  { src: logoChanel, alt: 'Chanel' },
+  { src: logoDolceGabbana, alt: 'Dolce & Gabbana' },
+  { src: logoLouisVuitton, alt: 'Louis Vuitton' },
+  { src: logoZara, alt: 'Zara' },
+]
 
 const ink = '#F2EFEA'
 const bg = '#0C0C0D'
@@ -16,6 +33,8 @@ const line = '#2A2A2C'
 const display = { fontFamily: "'Fraunces', serif", fontStyle: 'italic' as const, color: ink }
 const body = { fontFamily: "'Inter', sans-serif" }
 
+const SCROLL_ROOT_ID = 'noir-scroll-root'
+
 // Copy: variação "Editorial & Autoral" (ver src/content/vinhoVariations.ts) —
 // tom minimalista/atemporal combina com o visual escuro e editorial do Noir.
 const copy = vinhoVariations.v2
@@ -25,9 +44,43 @@ const portfolioItems = portfolio.map((item, i) => ({
   description: copy.portfolio[i].description,
 }))
 
+const campaignCategories: CampaignCategory[] = [
+  { label: 'Moda feminina', icon: 'dress', image: images.fashion02 },
+  { label: 'Beleza & skincare', icon: 'sparkle', image: images.beauty09 },
+  { label: 'Fitness & wellness', icon: 'dumbbell', image: images.fitness },
+  { label: 'Joias & acessórios', icon: 'gem', image: images.skirt11 },
+]
+
+const processSteps: ProcessStep[] = [
+  {
+    number: '1',
+    title: 'Briefing',
+    description: 'Compartilhe os objetivos da campanha, o público e o estilo desejado.',
+  },
+  {
+    number: '2',
+    title: 'Alinhamento',
+    description: 'Definimos disponibilidade, formato do conteúdo, cronograma e detalhes da produção.',
+  },
+  {
+    number: '3',
+    title: 'Produção',
+    description: 'Realizamos a sessão de fotos ou vídeos seguindo o briefing aprovado.',
+  },
+  {
+    number: '4',
+    title: 'Entrega',
+    description: 'Você recebe todo o material pronto para usar em campanhas, redes sociais e ações de marketing.',
+  },
+]
+
 export function NoirPage() {
   return (
-    <div style={{ backgroundColor: bg, color: ink, ...body }} className="min-h-screen">
+    <div
+      id={SCROLL_ROOT_ID}
+      style={{ backgroundColor: bg, color: ink, ...body }}
+      className="h-dvh w-full snap-y snap-mandatory overflow-y-auto"
+    >
       <VideoHero
         videoSrc={heroVideos.noir}
         eyebrow="Modelo Comercial — São Paulo"
@@ -37,17 +90,16 @@ export function NoirPage() {
         location={isabella.location.split(',')[0]}
         locationLabel={isabella.locationLabel}
         stats={isabella.socialStats}
-        ctaLabel={copy.ctaPrimary}
+        ctaLabel="Contato Comercial"
         ctaHref={isabella.contactHref}
-        ctaSecondaryLabel={copy.ctaSecondary}
-        ctaSecondaryHref={isabella.contactHref}
+        ctaTagline="Collabs e Campanhas"
         colors={{ overlayTint: bg, text: ink, mutedText: muted, accent, ctaBg: ink, ctaText: bg }}
         displayFont={display}
         bodyFont={body}
+        replayOnScroll
       />
 
       {/* Sobre */}
-      <SectionDivider label="Sobre" labelStyle={{ color: accent }} bg={bg} />
       <AboutSection
         image={images.rosto}
         bioLong={copy.sobre}
@@ -55,7 +107,12 @@ export function NoirPage() {
         overlayColor={bg}
         bodyStyle={{ ...body, color: ink }}
         mutedStyle={{ color: muted }}
-        valueColor={ink}
+        valueColor={accent}
+        lineColor={line}
+        scroller={`#${SCROLL_ROOT_ID}`}
+        eyebrow="Sobre"
+        eyebrowStyle={{ ...body, color: accent }}
+        imageBrightness={0.4}
       />
 
       {/* Portfólio — pinado */}
@@ -66,49 +123,55 @@ export function NoirPage() {
         captionStyle={{ ...display }}
         descriptionStyle={{ ...body, color: ink }}
         overlayColor={bg}
+        mediaBrightness={0.4}
       />
 
       {/* Campanhas ideais */}
-      <SectionDivider label="Campanhas ideais" labelStyle={{ color: accent }} bg={bg} />
-      <section className="px-6 py-20 sm:px-10 md:px-16">
-        <ScrollFade>
-          <div className="flex flex-wrap gap-3">
-            {isabella.categories.map((c) => (
-              <span
-                key={c}
-                className="rounded-sm border px-4 py-2 text-sm"
-                style={{ borderColor: line, color: ink }}
-              >
-                {c}
-              </span>
-            ))}
-          </div>
-        </ScrollFade>
-      </section>
+      <CampaignsSection
+        categories={campaignCategories}
+        intro="Um perfil versátil o suficiente pra transitar entre esses universos sem perder consistência."
+        eyebrow="Campanhas"
+        eyebrowStyle={{ ...body, color: accent }}
+        bodyStyle={body}
+        colors={{ ink, muted, accent, line, bg }}
+        scroller={`#${SCROLL_ROOT_ID}`}
+        partnersLogos={partnerLogos}
+        partnersTitle="Marcas Parceiras"
+      />
+
+      {/* Como funciona */}
+      <ProcessSection
+        image={images.dress10}
+        steps={processSteps}
+        eyebrow="Da ideia à campanha"
+        eyebrowStyle={{ ...body, color: accent }}
+        bodyStyle={body}
+        displayFont={display}
+        colors={{ ink, muted, accent, line, bg }}
+      />
 
       {/* Contato final */}
-      <SectionDivider label="Contato" labelStyle={{ color: accent }} bg={bg} />
-      <section id="contato" className="px-6 py-24 text-center sm:px-10">
-        <ScrollFade>
-          <h2 style={display} className="text-[clamp(2rem,5vw,4rem)]">
-            Vamos criar juntos.
-          </h2>
-          <div className="mt-8 inline-block">
-            <CTAButton
-              href={isabella.contactHref}
-              className="rounded-full px-8 py-4 text-[13px] uppercase tracking-[0.08em]"
-              style={{ backgroundColor: ink, color: bg }}
-            >
-              {copy.ctaPrimary}
-            </CTAButton>
-          </div>
-        </ScrollFade>
-      </section>
+      <ContactSection
+        image={images.corpo}
+        title="Vamos criar juntos."
+        ctaPrimaryLabel="Solicitar Disponibilidade"
+        ctaHref={isabella.contactHref}
+        ctaTagline="Parcerias"
+        mediaKitDescription="Reúne formatos de conteúdo, métricas e disponibilidade para propostas de parceria."
+        mediaKitCtaLabel="Solicitar Mídia Kit"
+        instagramHandle={isabella.instagramHandle}
+        instagramHref={isabella.instagramHref}
+        emailLabel={isabella.contactLabel}
+        emailHref={isabella.contactHref}
+        locationLine={`${isabella.location.split(',')[0]} · Atuação nacional`}
+        eyebrow="Contato"
+        eyebrowStyle={{ ...body, color: accent }}
+        displayFont={display}
+        bodyStyle={body}
+        colors={{ ink, muted, accent, line, bg, ctaBg: ink, ctaText: bg }}
+      />
 
-      <footer
-        className="border-t px-6 py-8 text-[11px] sm:px-10"
-        style={{ borderColor: line, color: muted }}
-      >
+      <footer className="border-t px-6 py-8 text-[11px] sm:px-10" style={{ borderColor: line, color: muted }}>
         {isabella.name} · {isabella.location} · {isabella.contactLabel}
       </footer>
     </div>
