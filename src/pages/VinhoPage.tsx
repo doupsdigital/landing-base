@@ -3,9 +3,11 @@ import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
 import { CampaignsSection } from '../components/CampaignsSection'
 import type { CampaignCategory } from '../components/CampaignsSection'
+import { PartnersSection } from '../components/PartnersSection'
 import { ContactSection } from '../components/ContactSection'
 import { isabella, images, portfolio, heroVideos, videos } from '../content/isabella'
 import type { VinhoVariation } from '../content/vinhoVariations'
+import partnersLogo from '../assets/images/carrosel - sem fundo.png'
 
 const bg = '#1A1310'
 const ink = '#F3ECE4'
@@ -126,6 +128,14 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         bodyStyle={body}
         colors={{ ink, muted, accent, line, bg }}
         scroller={`#${SCROLL_ROOT_ID}`}
+      />
+
+      {/* Marcas parceiras */}
+      <PartnersSection
+        image={partnersLogo}
+        imageAlt="Marcas parceiras"
+        eyebrow="Marcas Parceiras"
+        eyebrowStyle={{ ...body, color: accent }}
       />
 
       {/* Contato final */}
