@@ -51,7 +51,7 @@ const campaignCategories: CampaignCategory[] = [
 
 export function VinhoPage({ variation }: VinhoPageProps) {
   const title = variation?.headline ?? 'Isabella Marques'
-  const lead = variation?.subheadline ?? 'Elegância sem exagero. Confiança sem esforço.'
+  const lead = variation?.subheadline ?? 'Moda, beleza e lifestyle com autenticidade.'
   const bioLong = variation?.sobre ?? isabella.bioLong
   const ctaPrimary = variation?.ctaPrimary ?? 'Falar no WhatsApp'
   const ctaSecondary = variation?.ctaSecondary
@@ -155,13 +155,12 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         instagramHref={isabella.instagramHref}
         emailLabel={isabella.contactLabel}
         emailHref={isabella.contactHref}
-        responseTime={isabella.responseTime}
         locationLine={`${isabella.location.split(',')[0]} · Atuação nacional`}
         eyebrow="Contato"
         eyebrowStyle={{ ...body, color: accent }}
         displayFont={display}
         bodyStyle={body}
-        colors={{ ink, muted, accent, line, ctaBg: vinho, ctaText: ink }}
+        colors={{ ink, muted, accent, line, bg, ctaBg: vinho, ctaText: ink }}
       />
 
       <footer className="border-t px-6 py-8 text-[11px] sm:px-10" style={{ borderColor: line, color: muted }}>

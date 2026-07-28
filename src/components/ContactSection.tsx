@@ -9,6 +9,7 @@ type ContactSectionColors = {
   muted: string
   accent: string
   line: string
+  bg: string
   ctaBg: string
   ctaText: string
 }
@@ -24,7 +25,6 @@ type ContactSectionProps = {
   instagramHref: string
   emailLabel: string
   emailHref: string
-  responseTime: string
   locationLine: string
   eyebrow: string
   eyebrowStyle: CSSProperties
@@ -68,7 +68,6 @@ export function ContactSection({
   instagramHref,
   emailLabel,
   emailHref,
-  responseTime,
   locationLine,
   eyebrow,
   eyebrowStyle,
@@ -120,10 +119,10 @@ export function ContactSection({
         </span>
       </div>
 
-      <div className="-mt-6 flex min-h-dvh w-full items-center px-6 py-8 sm:-mt-8 sm:px-10 sm:py-12 md:px-16 md:py-16">
+      <div className="-mt-6 flex min-h-dvh w-full items-center px-6 pb-24 pt-8 sm:-mt-8 sm:px-10 sm:pb-28 sm:pt-12 md:px-16 md:pb-16 md:pt-16">
         <div className="mx-auto grid w-full max-w-5xl items-center gap-6 sm:gap-8 md:grid-cols-5 md:gap-16">
           <div
-            className="relative mx-auto aspect-[3/5] max-h-[36dvh] w-full max-w-[240px] overflow-hidden rounded-sm transition-[opacity,transform] duration-1000 ease-out sm:max-h-[46dvh] sm:max-w-xs md:col-span-2 md:mx-0 md:max-h-none md:max-w-none"
+            className="relative mx-auto aspect-[3/5] max-h-[44dvh] w-full max-w-[240px] overflow-hidden rounded-sm transition-[opacity,transform] duration-1000 ease-out sm:max-h-[52dvh] sm:max-w-xs md:col-span-2 md:mx-0 md:max-h-none md:max-w-none"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: `translateY(${isVisible ? 0 : 40}px)`,
@@ -168,39 +167,52 @@ export function ContactSection({
                 </CTAButton>
               ) : null}
             </div>
-
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5 sm:mt-8 md:mt-10 md:justify-start">
-              <a
-                href={instagramHref}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs transition-opacity hover:opacity-100"
-                style={{ ...bodyStyle, color: colors.muted, opacity: 0.65 }}
-              >
-                <InstagramGlyph className="h-3.5 w-3.5" />
-                {instagramHandle}
-              </a>
-              <a
-                href={emailHref}
-                className="inline-flex items-center gap-1.5 text-xs transition-opacity hover:opacity-100"
-                style={{ ...bodyStyle, color: colors.muted, opacity: 0.65 }}
-              >
-                <MailGlyph className="h-3.5 w-3.5" />
-                {emailLabel}
-              </a>
-            </div>
-
-            <p className="mt-3 text-xs sm:mt-4" style={{ ...bodyStyle, color: colors.muted, opacity: 0.6 }}>
-              {responseTime}
-            </p>
-
-            <div
-              className="mt-6 border-t pt-4 text-[11px] uppercase tracking-[0.16em] sm:mt-8 sm:pt-6 md:mt-9"
-              style={{ ...bodyStyle, borderColor: colors.line, color: colors.muted }}
-            >
-              {locationLine}
-            </div>
           </div>
+        </div>
+      </div>
+
+      {/* Barra fixa: tira Instagram/e-mail/resposta/localização do fluxo da
+          seção pra dar mais respiro (e altura) pra foto e pro CTA — só
+          aparece com o Contato em tela, controlada pelo mesmo `isVisible`
+          do IntersectionObserver acima. */}
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-6 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-4 transition-[opacity,transform] duration-700 ease-out sm:px-10"
+        style={{
+          opacity: isVisible ? 1 : 0,
+          transform: `translateY(${isVisible ? 0 : 16}px)`,
+        }}
+      >
+        <div
+          className="pointer-events-auto flex w-full max-w-3xl flex-col items-center gap-1.5 rounded-t-sm border-t px-4 py-3 text-center backdrop-blur-sm sm:flex-row sm:justify-between sm:gap-4 sm:px-6"
+          style={{ borderColor: colors.line, backgroundColor: `${colors.bg}F0` }}
+        >
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1 sm:justify-start">
+            <a
+              href={instagramHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs transition-opacity hover:opacity-100"
+              style={{ ...bodyStyle, color: colors.muted, opacity: 0.7 }}
+            >
+              <InstagramGlyph className="h-3.5 w-3.5" />
+              {instagramHandle}
+            </a>
+            <a
+              href={emailHref}
+              className="inline-flex items-center gap-1.5 text-xs transition-opacity hover:opacity-100"
+              style={{ ...bodyStyle, color: colors.muted, opacity: 0.7 }}
+            >
+              <MailGlyph className="h-3.5 w-3.5" />
+              {emailLabel}
+            </a>
+          </div>
+
+          <p
+            className="text-[10px] uppercase tracking-[0.14em] sm:text-right"
+            style={{ ...bodyStyle, color: colors.muted, opacity: 0.55 }}
+          >
+            {locationLine}
+          </p>
         </div>
       </div>
     </section>

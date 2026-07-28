@@ -51,7 +51,7 @@ export const isabella = {
   bioShort:
     'Modelo comercial de 25 anos, com estética clean, sofisticada e contemporânea — presença que transita com naturalidade entre moda, beleza, fitness e lifestyle premium.',
   bioLong:
-    'Isabella constrói uma imagem consistente, refinada e atemporal: elegância sem exagero, confiança sem esforço. É essa combinação que a torna versátil em campanhas de moda, beleza, fitness, tecnologia, joias, hotelaria e marcas premium — sempre editorial, nunca caricata.',
+    'Com uma presença leve e sofisticada, Isabella desenvolve conteúdos que aproximam marcas do seu público. Atua em campanhas de moda, beleza, fitness e lifestyle, entregando uma comunicação visual moderna, natural e profissional.',
   stats: [
     { label: 'Altura', value: '1,70 m' },
     { label: 'Idade', value: '25 anos' },
