@@ -10,3 +10,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
+
+/* Glow pulsante contínuo do CTA principal (ver MagneticGlowButton) — a cor
+   vem da custom property `--glow-color`, definida inline por instância. */
+@keyframes cta-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 10px 2px var(--glow-color);
+  }
+  50% {
+    box-shadow: 0 0 32px 10px var(--glow-color);
+  }
+}
+
+.animate-cta-glow {
+  animation: cta-glow-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-cta-glow {
+    animation: none;
+  }
+}

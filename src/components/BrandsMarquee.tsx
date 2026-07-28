@@ -1,20 +1,22 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap } from '../lib/gsap'
 
+type Logo = {
+  src: string
+  alt: string
+}
+
 type BrandsMarqueeProps = {
-  image: string
-  imageAlt?: string
-  /** Quantas cópias distintas da imagem por metade do track, antes de duplicar pro loop. */
-  tileCount?: number
+  logos: Logo[]
 }
 
 /**
- * Loop infinito: o conteúdo é duplicado (`tileCount * 2` cópias) e o track
- * anda só até `xPercent: -50` (metade da largura duplicada) antes de repetir
- * — como a segunda metade é idêntica à primeira, o reinício não tem soquinho
+ * Loop infinito: a lista de logos é duplicada (2 cópias) e o track anda só
+ * até `xPercent: -50` (metade da largura duplicada) antes de repetir — como
+ * a segunda metade é idêntica à primeira, o reinício não tem soquinho
  * perceptível. `ease: 'none'` mantém velocidade constante.
  */
-export function BrandsMarquee({ image, imageAlt = '', tileCount = 5 }: BrandsMarqueeProps) {
+export function BrandsMarquee({ logos }: BrandsMarqueeProps) {
   const trackRef = useRef<HTMLDivElement>(null)
   const tweenRef = useRef<gsap.core.Tween | null>(null)
 
@@ -35,9 +37,9 @@ export function BrandsMarquee({ image, imageAlt = '', tileCount = 5 }: BrandsMar
       tweenRef.current = null
       ctx.revert()
     }
-  }, [tileCount])
+  }, [logos.length])
 
-  const tiles = Array.from({ length: tileCount * 2 })
+  const tiles = [...logos, ...logos]
 
   return (
     <div
@@ -45,13 +47,13 @@ export function BrandsMarquee({ image, imageAlt = '', tileCount = 5 }: BrandsMar
       onMouseEnter={() => tweenRef.current?.pause()}
       onMouseLeave={() => tweenRef.current?.resume()}
     >
-      <div ref={trackRef} className="flex w-max items-center gap-12 sm:gap-16 md:gap-20">
-        {tiles.map((_, i) => (
+      <div ref={trackRef} className="flex w-max items-center gap-6 sm:gap-8 md:gap-10">
+        {tiles.map((logo, i) => (
           <img
             key={i}
-            src={image}
-            alt={i === 0 ? imageAlt : ''}
-            className="h-16 w-auto shrink-0 sm:h-20 md:h-24"
+            src={logo.src}
+            alt={i < logos.length ? logo.alt : ''}
+            className="h-24 w-auto shrink-0 opacity-80 grayscale sm:h-28 md:h-32"
           />
         ))}
       </div>

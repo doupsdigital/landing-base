@@ -3,6 +3,7 @@ import { useLayoutEffect, useRef } from 'react'
 import { gsap } from '../lib/gsap'
 import { CategoryIcon } from './CategoryIcon'
 import type { CategoryIconName } from './CategoryIcon'
+import { BrandsMarquee } from './BrandsMarquee'
 
 export type CampaignCategory = {
   label: string
@@ -28,6 +29,9 @@ type CampaignsSectionProps = {
   colors: CampaignsSectionColors
   /** Scroller do ScrollTrigger, se a página não rolar na `window` (ex: container próprio com `scroll-snap`). Padrão: `window`. */
   scroller?: string | Element
+  /** Logos de marcas parceiras, exibidos em carrossel abaixo dos chips de categoria. */
+  partnersLogos?: { src: string; alt: string }[]
+  partnersTitle?: string
 }
 
 /**
@@ -44,6 +48,8 @@ export function CampaignsSection({
   bodyStyle,
   colors,
   scroller,
+  partnersLogos,
+  partnersTitle,
 }: CampaignsSectionProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const chipRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -89,37 +95,67 @@ export function CampaignsSection({
         </span>
       </div>
 
-      <div className="-mt-6 flex min-h-screen w-full flex-col items-center justify-center px-6 py-10 sm:-mt-8 sm:px-10 md:px-16">
-        <p
-          className="mx-auto mb-8 max-w-xl text-center text-base leading-relaxed sm:text-lg"
-          style={{ ...bodyStyle, color: colors.muted }}
-        >
-          {intro}
-        </p>
+      <div
+        className={`-mt-6 flex min-h-screen w-full flex-col items-center px-6 sm:-mt-8 sm:px-10 md:px-16 ${
+          partnersLogos && partnersLogos.length > 0 ? 'justify-start pb-16 pt-16 sm:pt-20' : 'justify-center py-10'
+        }`}
+      >
+        <div className="flex w-full flex-col items-center">
+          <p
+            className="mx-auto mb-8 max-w-xl text-center text-base leading-relaxed sm:text-lg"
+            style={{ ...bodyStyle, color: colors.muted }}
+          >
+            {intro}
+          </p>
 
-        <div className="flex max-w-3xl flex-wrap justify-center gap-3">
-          {categories.map((cat, i) => (
-            <div
-              key={cat.label}
-              ref={(el) => {
-                chipRefs.current[i] = el
-              }}
-              className="relative overflow-hidden rounded-sm border px-4 py-2.5"
-              style={{ borderColor: colors.line }}
-            >
-              {cat.image ? (
-                <>
-                  <img src={cat.image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-35" />
-                  <div className="absolute inset-0" style={{ backgroundColor: `${colors.bg}B3` }} />
-                </>
-              ) : null}
-              <span className="relative z-10 flex items-center gap-2 text-sm" style={{ ...bodyStyle, color: colors.ink }}>
-                <CategoryIcon name={cat.icon} className="h-4 w-4 shrink-0" style={{ color: colors.accent }} />
-                {cat.label}
-              </span>
-            </div>
-          ))}
+          <div className="grid w-full max-w-md grid-cols-2 gap-3 sm:max-w-xl sm:gap-4">
+            {categories.map((cat, i) => (
+              <div
+                key={cat.label}
+                ref={(el) => {
+                  chipRefs.current[i] = el
+                }}
+                className="group relative aspect-square overflow-hidden rounded-sm border"
+                style={{ borderColor: colors.line }}
+              >
+                {cat.image ? (
+                  <img
+                    src={cat.image}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                ) : null}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: `linear-gradient(to top, ${colors.bg}E6 0%, ${colors.bg}66 55%, ${colors.bg}40 100%)`,
+                  }}
+                />
+                <div className="relative z-10 flex h-full flex-col items-center justify-center gap-2.5 p-4 text-center sm:gap-3">
+                  <CategoryIcon name={cat.icon} className="h-5 w-5 shrink-0 sm:h-6 sm:w-6" style={{ color: colors.accent }} />
+                  <span
+                    className="text-sm uppercase tracking-[0.08em] sm:text-base"
+                    style={{ ...bodyStyle, color: colors.ink }}
+                  >
+                    {cat.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        {partnersLogos && partnersLogos.length > 0 ? (
+          <div className="mt-14 w-full max-w-3xl sm:mt-16">
+            <p
+              className="mb-6 text-center text-xs uppercase tracking-[0.3em] sm:text-sm"
+              style={{ ...bodyStyle, color: colors.accent }}
+            >
+              {partnersTitle}
+            </p>
+            <BrandsMarquee logos={partnersLogos} />
+          </div>
+        ) : null}
       </div>
     </section>
   )

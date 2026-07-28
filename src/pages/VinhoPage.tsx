@@ -3,11 +3,24 @@ import { PinnedPortfolio } from '../components/PinnedPortfolio'
 import { AboutSection } from '../components/AboutSection'
 import { CampaignsSection } from '../components/CampaignsSection'
 import type { CampaignCategory } from '../components/CampaignsSection'
-import { PartnersSection } from '../components/PartnersSection'
 import { ContactSection } from '../components/ContactSection'
 import { isabella, images, portfolio, heroVideos, videos } from '../content/isabella'
 import type { VinhoVariation } from '../content/vinhoVariations'
-import partnersLogo from '../assets/images/carrosel - sem fundo.png'
+import logoGucci from '../assets/images/logos/01 - Gucci_logo.png'
+import logoVersace from '../assets/images/logos/02 - versace-primary-logo.png'
+import logoChanel from '../assets/images/logos/03 - Chanel_logo.png'
+import logoDolceGabbana from '../assets/images/logos/04 - Dolce-Gabbana-Logo.png'
+import logoLouisVuitton from '../assets/images/logos/05 Louis-Vuitton-logo.png'
+import logoZara from '../assets/images/logos/06 - ZARA-logo.png'
+
+const partnerLogos = [
+  { src: logoGucci, alt: 'Gucci' },
+  { src: logoVersace, alt: 'Versace' },
+  { src: logoChanel, alt: 'Chanel' },
+  { src: logoDolceGabbana, alt: 'Dolce & Gabbana' },
+  { src: logoLouisVuitton, alt: 'Louis Vuitton' },
+  { src: logoZara, alt: 'Zara' },
+]
 
 const bg = '#1A1310'
 const ink = '#F3ECE4'
@@ -33,9 +46,7 @@ const campaignCategories: CampaignCategory[] = [
   { label: 'Moda feminina', icon: 'dress', image: images.fashion02 },
   { label: 'Beleza & skincare', icon: 'sparkle', image: images.beauty09 },
   { label: 'Fitness & wellness', icon: 'dumbbell', image: images.fitness },
-  { label: 'Joias & acessórios', icon: 'gem' },
-  { label: 'Hotelaria & gastronomia', icon: 'bell' },
-  { label: 'Lifestyle & marcas premium', icon: 'star' },
+  { label: 'Joias & acessórios', icon: 'gem', image: images.skirt11 },
 ]
 
 export function VinhoPage({ variation }: VinhoPageProps) {
@@ -128,20 +139,14 @@ export function VinhoPage({ variation }: VinhoPageProps) {
         bodyStyle={body}
         colors={{ ink, muted, accent, line, bg }}
         scroller={`#${SCROLL_ROOT_ID}`}
-      />
-
-      {/* Marcas parceiras */}
-      <PartnersSection
-        image={partnersLogo}
-        imageAlt="Marcas parceiras"
-        eyebrow="Marcas Parceiras"
-        eyebrowStyle={{ ...body, color: accent }}
+        partnersLogos={partnerLogos}
+        partnersTitle="Marcas Parceiras"
       />
 
       {/* Contato final */}
       <ContactSection
         image={images.corpo}
-        title="Vamos criar juntos."
+        title="A presença que sua marca precisa."
         ctaPrimaryLabel={ctaPrimary}
         ctaHref={isabella.contactHref}
         ctaSecondaryLabel={ctaSecondary}
